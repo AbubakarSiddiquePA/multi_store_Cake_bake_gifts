@@ -1,7 +1,13 @@
+import 'package:bake_store/categories/bake_categ.dart';
+import 'package:bake_store/categories/cards_categ.dart';
+import 'package:bake_store/categories/flowers_categ.dart';
+import 'package:bake_store/categories/gifts_categ.dart';
+import 'package:bake_store/categories/hampers_categ.dart';
+import 'package:bake_store/categories/save_th_d_categ.dart';
 import 'package:bake_store/widgets/fake_search.dart';
 import 'package:flutter/material.dart';
 
-import '../categories/cake_category.dart';
+import '../categories/cake_categ.dart';
 
 List<ItemData> items = [
   ItemData(label: "Cake"),
@@ -10,6 +16,7 @@ List<ItemData> items = [
   ItemData(label: "Hampers"),
   ItemData(label: "Cards"),
   ItemData(label: "SaveTheDate"),
+  ItemData(label: "Flowers"),
 ];
 
 class CategoryScreen extends StatefulWidget {
@@ -109,21 +116,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
         scrollDirection: Axis.vertical,
         children: const [
           CakeCategory(),
-          Center(
-            child: Text("Bake category"),
-          ),
-          Center(
-            child: Text("Gifts category"),
-          ),
-          Center(
-            child: Text("Hampers category"),
-          ),
-          Center(
-            child: Text("Cards category"),
-          ),
-          Center(
-            child: Text("SaveTheDate category"),
-          ),
+          BakeCategory(),
+          GiftCategory(),
+          HampersCategory(),
+          CardsCategory(),
+          SaveTheDate(),
+          FlowersCategory(),
         ],
       ),
     );

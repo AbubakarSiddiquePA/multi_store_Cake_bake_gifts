@@ -1,5 +1,8 @@
+import 'package:bake_store/main_screens/cart.dart';
 import 'package:bake_store/main_screens/category.dart';
 import 'package:bake_store/main_screens/home.dart';
+import 'package:bake_store/main_screens/profile.dart';
+import 'package:bake_store/main_screens/stores.dart';
 import 'package:flutter/material.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -14,15 +17,9 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   final List<Widget> _tabs = const [
     HomeScreen(),
     CategoryScreen(),
-    Center(
-      child: Text("Stores Screen"),
-    ),
-    Center(
-      child: Text("Cart Screen"),
-    ),
-    Center(
-      child: Text("Profile Screen"),
-    ),
+    StoresScreen(),
+    CartScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -33,7 +30,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         currentIndex: _selectedIndex,
         // elevation: 0,
         type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         selectedItemColor: Colors.black,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
