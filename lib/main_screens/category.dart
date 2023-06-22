@@ -1,15 +1,15 @@
 import 'package:bake_store/widgets/fake_search.dart';
 import 'package:flutter/material.dart';
 
+import '../categories/cake_category.dart';
+
 List<ItemData> items = [
   ItemData(label: "Cake"),
   ItemData(label: "Bake"),
   ItemData(label: "Gifts"),
-  ItemData(label: "Bake"),
-  ItemData(label: "Bake"),
-  ItemData(label: "Bake"),
-  ItemData(label: "Bake"),
-  ItemData(label: "Bake"),
+  ItemData(label: "Hampers"),
+  ItemData(label: "Cards"),
+  ItemData(label: "SaveTheDate"),
 ];
 
 class CategoryScreen extends StatefulWidget {
@@ -20,6 +20,20 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
+  final PageController _pageController = PageController();
+
+  @override
+  void initState() {
+    //issue fix for navigating
+    for (var element in items) {
+      element.isSelected = false;
+    }
+    setState(() {
+      items[0].isSelected = true;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -48,12 +62,18 @@ class _CategoryScreenState extends State<CategoryScreen> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              for (var element in items) {
-                element.isSelected = false;
-              }
-              setState(() {
-                items[index].isSelected = true;
-              });
+              //this will jump to each pages according to index
+              // _pageController.jumpToPage(index);
+              _pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.bounceInOut);
+
+              // for (var element in items) {
+              //   element.isSelected = false;
+              // }
+              // setState(() {
+              //   items[index].isSelected = true;
+              // });
             },
             child: Container(
               color:
@@ -76,6 +96,36 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
       width: size.width * 0.8,
       color: Colors.white,
+      child: PageView(
+        controller: _pageController,
+        onPageChanged: (value) {
+          for (var element in items) {
+            element.isSelected = false;
+          }
+          setState(() {
+            items[value].isSelected = true;
+          });
+        },
+        scrollDirection: Axis.vertical,
+        children: const [
+          CakeCategory(),
+          Center(
+            child: Text("Bake category"),
+          ),
+          Center(
+            child: Text("Gifts category"),
+          ),
+          Center(
+            child: Text("Hampers category"),
+          ),
+          Center(
+            child: Text("Cards category"),
+          ),
+          Center(
+            child: Text("SaveTheDate category"),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,7 @@
 List<String> maincateg = ["cake", "bake", "gifts"];
 
-List<String> cake = ["Cake", "Bake", "Gifts"];
+List<String> cake = ["Birthday", "Anniversary", "Wedding"];
 
-List<String> bake = ["Cake", "Bake", "Gifts"];
+List<String> bake = ["Donuts", "Wrappers", "hot chips"];
 
-List<String> gifts = ["Cake", "Bake", "Gifts"];
+List<String> gifts = ["Heart", "Ornaments", "Teddybear"];
