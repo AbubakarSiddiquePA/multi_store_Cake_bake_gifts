@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:bake_store/main_screens/cstmr_home.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/yellow_btn.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -73,16 +77,11 @@ class CartScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              height: 35,
-              width: MediaQuery.of(context).size.width * 0.45,
-              decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.circular(15)),
-              child: MaterialButton(
-                onPressed: () {},
-                child: const Text("PROCEED TO CHECK OUT"),
-              ),
+            yellowButtonCstm(
+              colore: Colors.yellow,
+              label: "CHECK OUT",
+              width: 0.45,
+              onPressed: () {},
             )
           ],
         ),
