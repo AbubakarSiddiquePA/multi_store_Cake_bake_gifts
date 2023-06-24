@@ -229,10 +229,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     icon: Icons.lock,
                                   ),
                                   const GreyDivider(),
-                                  const ListTile(
-                                    title: Text("LogOut"),
-                                    subtitle: Text(" "),
-                                    leading: Icon(Icons.logout),
+                                  RepeatedListTile(
+                                    title: "LogOut",
+                                    icon: Icons.logout,
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, "/welcome_screen");
+                                    },
                                   ),
                                 ],
                               ),

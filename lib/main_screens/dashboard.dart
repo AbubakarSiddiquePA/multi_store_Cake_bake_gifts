@@ -28,7 +28,15 @@ class DashboardScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         title: AppBarTitle(title: "Dashboard"),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.logout))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, "/welcome_screen");
+            },
+            icon: const Icon(Icons.logout),
+            color: Colors.black,
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
