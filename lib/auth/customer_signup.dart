@@ -11,6 +11,7 @@ class CustomerRegister extends StatefulWidget {
 }
 
 class _CustomerRegisterState extends State<CustomerRegister> {
+  bool passwordVisibility = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +92,19 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: TextFormField(
+                      obscureText: passwordVisibility,
                       decoration: textFormDecoration.copyWith(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordVisibility = !passwordVisibility;
+                              });
+                            },
+                            icon: Icon(passwordVisibility
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                            color: Colors.grey,
+                          ),
                           labelText: "Password",
                           hintText: "Enter your password"),
                     ),
