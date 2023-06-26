@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:bake_store/main_screens/cstmr_home.dart';
-import 'package:bake_store/main_screens/splier_home.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -154,7 +152,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             ),
                             yellowButtonCstm(
                                 label: "SignUp",
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, "/customer_signup");
+                                },
                                 width: 0.25,
                                 colore: Colors.white),
                             AnimatedLogo(controller: _controller)

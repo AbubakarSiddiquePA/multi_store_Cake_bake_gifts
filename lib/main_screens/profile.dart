@@ -1,5 +1,9 @@
 // import 'package:flutter/material.dart';
 
+import 'package:bake_store/customer_screens/custmr_orders.dart';
+import 'package:bake_store/customer_screens/wishlist.dart';
+import 'package:bake_store/main_screens/cart.dart';
+import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -97,7 +101,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          CartScreen(back: AppBarBackButton()),
+                                    ));
+                              },
                               child: SizedBox(
                                 height: 40,
                                 width: MediaQuery.of(context).size.width * 0.2,
@@ -118,7 +129,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black54,
                             ),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WishlistScreen(),
+                                    ));
+                              },
                               child: SizedBox(
                                 height: 40,
                                 width: MediaQuery.of(context).size.width * 0.2,
@@ -143,7 +160,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CustomerOrders(),
+                                    ));
+                              },
                               child: SizedBox(
                                 height: 40,
                                 width: MediaQuery.of(context).size.width * 0.2,
