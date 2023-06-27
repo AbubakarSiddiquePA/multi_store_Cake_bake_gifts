@@ -2,6 +2,7 @@ import 'package:bake_store/main_screens/category.dart';
 import 'package:bake_store/main_screens/dashboard.dart';
 import 'package:bake_store/main_screens/home.dart';
 import 'package:bake_store/main_screens/stores.dart';
+import 'package:bake_store/main_screens/upload_product.dart';
 import 'package:flutter/material.dart';
 
 class SupplierHomeScreen extends StatefulWidget {
@@ -18,10 +19,8 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
     CategoryScreen(),
     StoresScreen(),
     DashboardScreen(),
+    UploadProductScreen(),
 
-    Center(
-      child: Text("Upload"),
-    ),
     // CartScreen(),
     // ProfileScreen(),
   ];
