@@ -88,7 +88,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
                       actionLabel: "SignUp",
                       haveAccount: "Don't have an account? ",
                       onPressed: () {
-                        // Navigator.pushNamed(context, "/welcome_screen");
+                        Navigator.pushNamed(context, "/customer_signup");
                       },
                     ),
                     AuthMainButton(

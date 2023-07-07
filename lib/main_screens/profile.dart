@@ -32,6 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CustomScrollView(
               slivers: [
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   pinned: true,
                   centerTitle: true,
                   elevation: 0,

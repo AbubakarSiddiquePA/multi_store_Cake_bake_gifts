@@ -1,13 +1,11 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:bake_store/widgets/auth_widgets.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../widgets/snackbar.dart';
-
-// final TextEditingController _namecontroller = TextEditingController();
-// final TextEditingController _emailcontroller = TextEditingController();
-// final TextEditingController _passwordcontroller = TextEditingController();
 
 class CustomerRegister extends StatefulWidget {
   const CustomerRegister({super.key});
@@ -25,6 +23,46 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       GlobalKey<ScaffoldMessengerState>();
 
   bool passwordVisibility = false;
+  final ImagePicker _picker = ImagePicker();
+  XFile? _imageFile;
+  dynamic _pickedImageError;
+
+  void _pickImageFromCamera() async {
+    try {
+      final pickedImage = await _picker.pickImage(
+          source: ImageSource.camera,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
+      setState(() {
+        _imageFile = pickedImage;
+      });
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+      print(_pickedImageError);
+    }
+  }
+
+  void _pickImageFromGallery() async {
+    try {
+      final pickedImage = await _picker.pickImage(
+          source: ImageSource.gallery,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: 95);
+      setState(() {
+        _imageFile = pickedImage;
+      });
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+      print(_pickedImageError);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
@@ -50,6 +88,9 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                             child: CircleAvatar(
                               radius: 60,
                               backgroundColor: Colors.grey.shade800,
+                              backgroundImage: _imageFile == null
+                                  ? null
+                                  : FileImage(File(_imageFile!.path)),
                             ),
                           ),
                           Column(
@@ -62,7 +103,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                                         topRight: Radius.circular(15))),
                                 child: IconButton(
                                   onPressed: () {
-                                    print("Pic image from Camera");
+                                    _pickImageFromCamera();
                                   },
                                   icon: const Icon(Icons.camera_alt),
                                   color: Colors.white,
@@ -79,7 +120,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                                         bottomRight: Radius.circular(15))),
                                 child: IconButton(
                                   onPressed: () {
-                                    print("Pic image from gallery");
+                                    _pickImageFromGallery();
                                   },
                                   icon: const Icon(Icons.photo),
                                   color: Colors.white,
@@ -164,18 +205,30 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         actionLabel: "LogIn",
                         haveAccount: "Already have an account?",
                         onPressed: () {
-                          // Navigator.pushNamed(context, "/customer_login");
+                          Navigator.pushNamed(context, "/customer_login");
                         },
                       ),
                       AuthMainButton(
                         mainButtonLabel: "Sign Up",
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            print("Valid");
+                            //validate for image pick
+                            if (_imageFile != null) {
+                              print("image picked");
+                              print("Valid");
 
-                            print(name);
-                            print(email);
-                            print(password);
+                              print(name);
+                              print(email);
+                              print(password);
+                              //just for reseting current values
+                              _formKey.currentState!.reset();
+                              setState(() {
+                                _imageFile = null;
+                              });
+                            } else {
+                              MyMessageHandler.showSnackBar(
+                                  _scaffoldKey, "please pick image first");
+                            }
                           } else {
                             MyMessageHandler.showSnackBar(
                                 _scaffoldKey, "please fill all fields");

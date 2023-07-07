@@ -18,6 +18,7 @@ class _CartScreenState extends State<CartScreen> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             elevation: 0,
             backgroundColor: Colors.white,
             title: const AppBarTitle(title: "Cart"),
