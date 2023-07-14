@@ -3,6 +3,7 @@ import 'package:bake_store/main_screens/category.dart';
 import 'package:bake_store/main_screens/home.dart';
 import 'package:bake_store/main_screens/profile.dart';
 import 'package:bake_store/main_screens/stores.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -14,12 +15,12 @@ class CustomerHomeScreen extends StatefulWidget {
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   int _selectedIndex = 0;
-  final List<Widget> _tabs = const [
-    HomeScreen(),
-    CategoryScreen(),
-    StoresScreen(),
-    CartScreen(),
-    ProfileScreen(),
+  final List<Widget> _tabs = [
+    const HomeScreen(),
+    const CategoryScreen(),
+    const StoresScreen(),
+    const CartScreen(),
+    ProfileScreen(documentId: FirebaseAuth.instance.currentUser!.uid),
   ];
 
   @override

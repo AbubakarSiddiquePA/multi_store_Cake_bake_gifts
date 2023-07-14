@@ -5,7 +5,10 @@ import 'package:bake_store/dashboard_components/my_store.dart';
 import 'package:bake_store/dashboard_components/splier_ordrs.dart';
 import 'package:bake_store/dashboard_components/suplier_statcs.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/alert_dialg.dart';
 
 List<String> label = [
   "my store",
@@ -47,7 +50,22 @@ class DashboardScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, "/welcome_screen");
+              MyAlertDialog.showMyDialogue(
+                  context: context,
+                  title: "LogOut",
+                  content: "Are you sure you want to log out?",
+                  tabNo: () {
+                    Navigator.of(context).pop();
+                  },
+                  tabYes: () async {
+                    // Perform the log out operation
+                    await FirebaseAuth.instance.signOut();
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushReplacementNamed(context, "/welcome_screen");
+                  });
+              // Navigator.pushReplacementNamed(context, "/welcome_screen");
             },
             icon: const Icon(Icons.logout),
             color: Colors.black,

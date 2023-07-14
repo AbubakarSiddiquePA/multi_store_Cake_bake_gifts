@@ -10,18 +10,18 @@ import 'package:image_picker/image_picker.dart';
 import '../widgets/snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-class CustomerRegister extends StatefulWidget {
-  const CustomerRegister({super.key});
+class SupplierRegister extends StatefulWidget {
+  const SupplierRegister({super.key});
 
   @override
-  State<CustomerRegister> createState() => _CustomerRegisterState();
+  State<SupplierRegister> createState() => _CustomerRegisterState();
 }
 
-class _CustomerRegisterState extends State<CustomerRegister> {
-  late String name;
+class _CustomerRegisterState extends State<SupplierRegister> {
+  late String storeName;
   late String email;
   late String password;
-  late String profileImage;
+  late String storeLogo;
   late String _uid;
   bool processing = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -33,8 +33,8 @@ class _CustomerRegisterState extends State<CustomerRegister> {
   XFile? _imageFile;
   dynamic _pickedImageError;
 
-  CollectionReference customers =
-      FirebaseFirestore.instance.collection("customers");
+  CollectionReference suppliers =
+      FirebaseFirestore.instance.collection("suppliers");
 
   void _pickImageFromCamera() async {
     try {
@@ -93,21 +93,21 @@ class _CustomerRegisterState extends State<CustomerRegister> {
 
           firebase_storage.Reference ref = firebase_storage
               .FirebaseStorage.instance
-              .ref("cust-images/$email.jpg");
+              .ref("supp-images/$email.jpg");
 
           //uploading file
           await ref.putFile(File(_imageFile!.path));
           _uid = FirebaseAuth.instance.currentUser!.uid;
           //get url for image
-          profileImage = await ref.getDownloadURL();
+          storeLogo = await ref.getDownloadURL();
           //set documnt for our map of data
-          await customers.doc(_uid).set({
-            "name": name,
+          await suppliers.doc(_uid).set({
+            "storeName": storeName,
             "email": email,
-            "profileimage": profileImage,
+            "storeLogo": storeLogo,
             "phone": "",
-            "address": "",
-            "cid": _uid
+            "sid": _uid,
+            "coverimage": "",
           });
           //just for reseting current values
 
@@ -115,7 +115,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           setState(() {
             _imageFile = null;
           });
-          Navigator.pushReplacementNamed(context, "/customer_login");
+          Navigator.pushReplacementNamed(context, "/supplier_login");
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             setState(() {
@@ -161,7 +161,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      const AuthHeaderLabel(headerLabel: "SignUp"),
+                      const AuthHeaderLabel(headerLabel: "Sign Up Supplier"),
                       Row(
                         children: [
                           Padding(
@@ -222,7 +222,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                             return null;
                           },
                           onChanged: (value) {
-                            name = value;
+                            storeName = value;
                           },
                           // controller: _namecontroller,
                           decoration: textFormDecoration.copyWith(
@@ -287,7 +287,7 @@ class _CustomerRegisterState extends State<CustomerRegister> {
                         actionLabel: "LogIn",
                         haveAccount: "Already have an account?",
                         onPressed: () {
-                          Navigator.pushNamed(context, "/customer_login");
+                          Navigator.pushNamed(context, "/supplier_login");
                         },
                       ),
                       processing == true

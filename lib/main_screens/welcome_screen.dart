@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:bake_store/widgets/yellow_btn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -14,6 +16,11 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  bool processing = false;
+
+  CollectionReference customers =
+      FirebaseFirestore.instance.collection("customers");
+  late String _uid;
 
   @override
   void initState() {
@@ -101,7 +108,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                   label: "LogIn",
                                   onPressed: () {
                                     Navigator.pushReplacementNamed(
-                                        context, "/supplier_screen");
+                                        context, "/supplier_login");
                                   },
                                   width: 0.25,
                                   colore: Colors.white),
@@ -109,7 +116,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                 padding: const EdgeInsets.only(right: 8),
                                 child: yellowButtonCstm(
                                     label: "SignUp",
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, "/supplier_signup");
+                                    },
                                     width: 0.25,
                                     colore: Colors.white),
                               )
@@ -145,7 +155,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                                   label: "LogIn",
                                   onPressed: () {
                                     Navigator.pushReplacementNamed(
-                                        context, "/customer_screen");
+                                        context, "/customer_login");
                                   },
                                   width: 0.25,
                                   colore: Colors.white),
@@ -184,15 +194,39 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             image: AssetImage("images/logo/fb_logo.png")),
                         onPressed: () {},
                       ),
-                      GoogleFacebookLogin(
-                        label: "Google",
-                        child: const Icon(
-                          Icons.person,
-                          size: 28,
-                          color: Colors.blueAccent,
-                        ),
-                        onPressed: () {},
-                      ),
+                      processing == true
+                          ? const CircularProgressIndicator()
+                          : GoogleFacebookLogin(
+                              label: "Guest",
+                              child: const Icon(
+                                Icons.person,
+                                size: 28,
+                                color: Colors.blueAccent,
+                              ),
+                              onPressed: () async {
+                                setState(() {
+                                  processing = true;
+                                });
+                                await FirebaseAuth.instance
+                                    .signInAnonymously()
+                                    .whenComplete(() async {
+                                  _uid = FirebaseAuth.instance.currentUser!.uid;
+
+                                  await customers.doc(_uid).set({
+                                    "name": "",
+                                    "email": "",
+                                    "profileimage": "",
+                                    "phone": "",
+                                    "address": "",
+                                    "cid": _uid
+                                  });
+                                });
+
+                                // ignore: use_build_context_synchronously
+                                Navigator.pushReplacementNamed(
+                                    context, "/customer_screen");
+                              },
+                            ),
                     ],
                   ),
                 )
