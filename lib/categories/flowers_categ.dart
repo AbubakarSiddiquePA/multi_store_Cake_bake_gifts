@@ -29,13 +29,13 @@ class FlowersCategory extends StatelessWidget {
                         crossAxisSpacing: 15,
                         crossAxisCount: 3,
                         children: List.generate(
-                          cake.length,
+                          cake.length - 1,
                           (index) {
                             return SubCategModel(
                               mainCategName: "Flowers",
-                              subCategName: cake[index],
+                              subCategName: cake[index + 1],
                               assetName: "images/cake/cake$index.jpg",
-                              subCategLabel: cake[index],
+                              subCategLabel: cake[index + 1],
                             );
                           },
                         )),

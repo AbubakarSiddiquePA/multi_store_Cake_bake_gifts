@@ -1,6 +1,14 @@
+import 'dart:io';
+
 import 'package:bake_store/utilities/categ_list.dart';
 import 'package:bake_store/widgets/snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
+import 'package:uuid/uuid.dart';
 
 class UploadProductScreen extends StatefulWidget {
   const UploadProductScreen({super.key});
@@ -14,13 +22,149 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  String mainCategoryValue = "cake";
-  String subCategValue = "Birthday";
-  List<String> categCake = [
-    "Birthday",
-    "Anniversary",
-    "Wedding",
-  ];
+  late double price;
+  late int quantity;
+  late String productName;
+  late String productDescription;
+  late String productId;
+  String mainCategoryValue = "select category";
+  String subCategValue = "subcategory";
+  List<String> subCategList = [];
+  bool processing = false;
+
+  final ImagePicker _picker = ImagePicker();
+  List<XFile>? imagesFileList = [];
+  List<String> imagesUrlList = [];
+
+  dynamic _pickedImageError;
+
+  void pickProductImages() async {
+    try {
+      final pickedImages = await _picker.pickMultiImage(
+          maxHeight: 300, maxWidth: 300, imageQuality: 95);
+      setState(() {
+        imagesFileList = pickedImages!;
+      });
+    } catch (e) {
+      setState(() {
+        _pickedImageError = e;
+      });
+      print(_pickedImageError);
+    }
+  }
+
+  Widget previewImages() {
+    if (imagesFileList!.isNotEmpty) {
+      return ListView.builder(
+        itemCount: imagesFileList!.length,
+        itemBuilder: (context, index) {
+          return Image.file(File(imagesFileList![index].path));
+        },
+      );
+    } else {
+      return Center(
+        child: Text(
+          "You have not \n \n picked images yet",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      );
+    }
+  }
+
+  void selectedMainCategory(String? value) {
+    if (value == "select category") {
+      subCategList = [];
+    } else if (value == "cake") {
+      subCategList = cake;
+    } else if (value == "bake") {
+      subCategList = bake;
+    } else if (value == "gifts") {
+      subCategList = gifts;
+    } else if (value == "flowers") {
+      subCategList = flowers;
+    }
+    print(value);
+    setState(() {
+      mainCategoryValue = value!;
+      subCategValue = "subcategory";
+    });
+  }
+
+  Future<void> uploadImages() async {
+    if (mainCategoryValue != "select category" &&
+        subCategValue != "subcategory") {
+      if (_formKey.currentState!.validate()) {
+        //by using on save its going to wait until we save data
+        //hear we save by on tapping on upload button
+        _formKey.currentState!.save();
+        if (imagesFileList!.isNotEmpty) {
+          setState(() {
+            processing = true;
+          });
+          try {
+            for (var image in imagesFileList!) {
+              firebase_storage.Reference ref = firebase_storage
+                  .FirebaseStorage.instance
+                  .ref("products/${path.basename(image.path)}");
+              await ref.putFile(File(image.path)).whenComplete(() async {
+                await ref.getDownloadURL().then((value) {
+                  imagesUrlList.add(value);
+                });
+              });
+            }
+          } catch (e) {
+            print(e);
+          }
+          //because we have few images(multiple) we are setting loop
+        } else {
+          MyMessageHandler.showSnackBar(_scaffoldKey, "please pick images");
+        }
+      } else {
+        MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
+      }
+    } else {
+      MyMessageHandler.showSnackBar(_scaffoldKey, "please select categories");
+    }
+  }
+
+  void uploadData() async {
+    if (imagesUrlList.isNotEmpty) {
+      CollectionReference productRef =
+          FirebaseFirestore.instance.collection("products");
+      productId = const Uuid().v4();
+      await productRef.doc(productId).set({
+        "proid": productId,
+        "maincategory": mainCategoryValue,
+        "subcategory": subCategValue,
+        "price": price,
+        "instock": quantity,
+        "proname": productName,
+        "prodesc": productDescription,
+        "sid": FirebaseAuth.instance.currentUser!.uid,
+        "proimages": imagesUrlList,
+        "discount": 0,
+      }).whenComplete(() {
+        setState(() {
+          processing = false;
+          imagesFileList = [];
+          mainCategoryValue = "select category";
+          // subCategValue = "subcategory";
+          subCategList = [];
+          imagesUrlList = [];
+        });
+        _formKey.currentState!.reset();
+      });
+    } else {
+      print("no images");
+    }
+  }
+
+  void uploadProduct() async {
+    await uploadImages().whenComplete(() => uploadData());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,24 +186,30 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                         color: Colors.blueGrey.shade100,
                         height: MediaQuery.of(context).size.width * 0.5,
                         width: MediaQuery.of(context).size.width * 0.5,
-                        child: const Center(
-                          child: Text(
-                            "You have not \n \n picked images yet",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
+                        child: imagesFileList != null
+                            ? previewImages()
+                            : const Center(
+                                child: Text(
+                                  "You have not \n \n picked images yet",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
                             const Text(
-                              "Select Main category",
+                              "* Select Main category",
+                              style: TextStyle(color: Colors.red),
                             ),
                             DropdownButton(
+                              iconEnabledColor: Colors.red,
+                              dropdownColor: Colors.white,
+
                               value: mainCategoryValue,
                               // items: ["Cake", "Bake", "Gift", "Hampers"]
                               items: maincateg
@@ -69,50 +219,44 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                                   child: Text(value),
                                 );
                               }).toList(),
-                              // items: [
-                              //   DropdownMenuItem(
-                              //     value: "Cake",
-                              //     child: Text("Cake"),
-                              //   ),
-                              //   DropdownMenuItem(
-                              //     value: "Bake",
-                              //     child: Text("Bake"),
-                              //   ),
-                              //   DropdownMenuItem(
-                              //     value: "Gift",
-                              //     child: Text("Gift"),
-                              //   )
-                              // ],
+
                               onChanged: (String? value) {
-                                print(value);
-                                setState(() {
-                                  mainCategoryValue = value!;
-                                });
+                                selectedMainCategory(value);
                               },
                             ),
                             const SizedBox(
                               height: 25,
                             ),
-                            const Text(
-                              "Select Sub category",
-                            ),
-                            DropdownButton(
-                              value: subCategValue,
-                              // items: ["Cake", "Bake", "Gift", "Hampers"]
-                              items: categCake
-                                  .map<DropdownMenuItem<String>>((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
+                            Column(
+                              children: [
+                                const Text(
+                                  "* Select Sub category",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                DropdownButton(
+                                  iconEnabledColor: Colors.red,
+                                  iconDisabledColor: Colors.black,
+                                  menuMaxHeight: 500,
+                                  dropdownColor: Colors.white,
+                                  disabledHint: const Text("select category"),
+                                  value: subCategValue,
+                                  // items: ["Cake", "Bake", "Gift", "Hampers"]
+                                  items: subCategList
+                                      .map<DropdownMenuItem<String>>((value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
 
-                              onChanged: (String? value) {
-                                print(value);
-                                setState(() {
-                                  subCategValue = value!;
-                                });
-                              },
+                                  onChanged: (String? value) {
+                                    print(value);
+                                    setState(() {
+                                      subCategValue = value!;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -139,6 +283,9 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                             }
                             return null;
                           },
+                          onSaved: (value) {
+                            price = double.parse(value!);
+                          },
                           keyboardType: const TextInputType.numberWithOptions(),
                           decoration: textFormDecoration.copyWith(
                               labelText: "Price", hintText: "Price..Rs?")),
@@ -157,6 +304,9 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                             }
                             return null;
                           },
+                          onSaved: (value) {
+                            quantity = int.parse(value!);
+                          },
                           keyboardType: TextInputType.number,
                           decoration: textFormDecoration.copyWith(
                               labelText: "Quantity", hintText: "Add quantity")),
@@ -171,6 +321,9 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                               return "please enter Product Name";
                             }
                             return null;
+                          },
+                          onSaved: (value) {
+                            productName = value!;
                           },
                           maxLength: 100,
                           maxLines: 3,
@@ -188,6 +341,9 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                               return "please enter Product Description";
                             }
                             return null;
+                          },
+                          onSaved: (value) {
+                            productDescription = value!;
                           },
                           maxLength: 800,
                           maxLines: 5,
@@ -207,22 +363,32 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 10),
               child: FloatingActionButton(
-                onPressed: () {},
-                backgroundColor: Colors.black,
-                child: const Icon(Icons.photo_library),
-              ),
+                  onPressed: imagesFileList!.isEmpty
+                      ? () {
+                          pickProductImages();
+                        }
+                      : () {
+                          setState(() {
+                            imagesFileList = [];
+                          });
+                        },
+                  backgroundColor: Colors.black,
+                  child: imagesFileList!.isEmpty
+                      ? const Icon(Icons.photo_library)
+                      : Icon(Icons.delete_forever)),
             ),
             FloatingActionButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  print("valid");
-                } else {
-                  MyMessageHandler.showSnackBar(
-                      _scaffoldKey, "please fill all fields");
-                }
-              },
+              onPressed: processing == true
+                  ? null
+                  : () {
+                      uploadProduct();
+                    },
               backgroundColor: Colors.black,
-              child: const Icon(Icons.upload),
+              child: processing == true
+                  ? const CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : const Icon(Icons.upload),
             )
           ],
         ),

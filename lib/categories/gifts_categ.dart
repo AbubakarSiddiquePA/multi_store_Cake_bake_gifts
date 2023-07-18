@@ -29,13 +29,13 @@ class GiftCategory extends StatelessWidget {
                         crossAxisSpacing: 15,
                         crossAxisCount: 3,
                         children: List.generate(
-                          cake.length,
+                          cake.length - 1,
                           (index) {
                             return SubCategModel(
-                              mainCategName: "Gift",
-                              subCategName: cake[index],
+                              mainCategName: "gifts",
+                              subCategName: cake[index + 1],
                               assetName: "images/cake/cake$index.jpg",
-                              subCategLabel: cake[index],
+                              subCategLabel: cake[index + 1],
                             );
                           },
                         )),
@@ -47,7 +47,7 @@ class GiftCategory extends StatelessWidget {
           const Positioned(
             bottom: 0,
             right: 0,
-            child: SliderBar(maincategName: "Gift"),
+            child: SliderBar(maincategName: "gifts"),
           )
         ],
       ),
