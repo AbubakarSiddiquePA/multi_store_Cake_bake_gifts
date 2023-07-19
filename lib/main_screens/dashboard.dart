@@ -4,6 +4,7 @@ import 'package:bake_store/dashboard_components/manage_products.dart';
 import 'package:bake_store/dashboard_components/my_store.dart';
 import 'package:bake_store/dashboard_components/splier_ordrs.dart';
 import 'package:bake_store/dashboard_components/suplier_statcs.dart';
+import 'package:bake_store/main_screens/visit_store.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ List<IconData> icons = [
 ];
 
 List<Widget> pages = [
-  const MyStore(),
+  VisitStore(suppId: FirebaseAuth.instance.currentUser!.uid),
   const SupllierOrders(),
   const EditBuisness(),
   const ManageProduct(),

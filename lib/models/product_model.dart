@@ -1,4 +1,5 @@
 import 'package:bake_store/minor_screens/prdct_dtls_scrn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProductModel extends StatelessWidget {
@@ -12,7 +13,7 @@ class ProductModel extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ProductDetailsScreen(),
+              builder: (context) => ProductDetailsScreen(proList: products),
             ));
       },
       child: Padding(
@@ -54,7 +55,12 @@ class ProductModel extends StatelessWidget {
                               fontSize: 16,
                               fontWeight: FontWeight.bold),
                         ),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.favorite))
+                        products["sid"] ==
+                                FirebaseAuth.instance.currentUser!.uid
+                            ? IconButton(
+                                onPressed: () {}, icon: Icon(Icons.edit))
+                            : IconButton(
+                                onPressed: () {}, icon: Icon(Icons.favorite))
                       ],
                     ),
                   ],

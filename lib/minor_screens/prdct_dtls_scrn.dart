@@ -1,3 +1,4 @@
+import 'package:bake_store/main_screens/visit_store.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,82 +7,140 @@ import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
 import '../models/product_model.dart';
+import 'full_screen_view.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({super.key});
+  final dynamic proList;
+  const ProductDetailsScreen({super.key, required this.proList});
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  final Stream<QuerySnapshot> _productsStream =
-      FirebaseFirestore.instance.collection('products').snapshots();
+  late List<dynamic> imagesList = widget.proList["proimages"];
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance
+        .collection('products')
+        .where("maincategory", isEqualTo: widget.proList["maincategory"])
+        .where("subcategory", isEqualTo: widget.proList["subcategory"])
+        .snapshots();
     return Material(
       child: SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  child: Swiper(
-                    pagination: const SwiperPagination(
-                        builder: SwiperPagination.fraction),
-                    itemBuilder: (context, index) {
-                      return const Image(
-                          image: AssetImage("images/cake/cake0.jpg"));
-                    },
-                    itemCount: 1,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FullScreenView(imagesList: imagesList),
+                        ));
+                  },
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        child: Swiper(
+                          pagination: const SwiperPagination(
+                              builder: SwiperPagination.fraction),
+                          itemBuilder: (context, index) {
+                            return Image(
+                                image: NetworkImage(imagesList[index]));
+                          },
+                          itemCount: imagesList.length,
+                        ),
+                      ),
+                      Positioned(
+                        left: 15,
+                        top: 20,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.yellow,
+                          child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
+                              )),
+                        ),
+                      ),
+                      Positioned(
+                          right: 15,
+                          top: 20,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.yellow,
+                            child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  Icons.share,
+                                  color: Colors.black,
+                                )),
+                          ))
+                    ],
                   ),
                 ),
-                const Text(
-                  "Pro name ",
-                  style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Row(
-                      children: [
-                        Text(
-                          "RS ",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "65.5 ",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.favorite)),
-                  ],
-                ),
-                const Text(
-                  "99 pieces available in stock",
-                  style: TextStyle(
-                      color: Colors.blueGrey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8, right: 8, left: 8, bottom: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.proList['proname'],
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Text(
+                                "RS ",
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.proList['price'].toStringAsFixed(2),
+                                style: const TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.favorite)),
+                        ],
+                      ),
+                      Text(
+                        (widget.proList["instock"].toString()) +
+                            ("99 pieces available in stock"),
+                        style: const TextStyle(
+                            color: Colors.blueGrey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
                 const ProductDetailsHeader(
                   label: "Item Descriptionn",
                 ),
                 Text(
                   textScaleFactor: 1.2,
-                  "Pro description",
+                  widget.proList['prodesc'].toString(),
                   style: TextStyle(
                       color: Colors.blueGrey.shade800,
                       fontSize: 20,
@@ -138,25 +197,38 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ],
             ),
           ),
-          bottomSheet: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.store)),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
-                ],
-              ),
-              yellowButtonCstm(
-                  label: "Add to cart",
-                  onPressed: () {},
-                  width: 0.55,
-                  colore: Colors.yellow)
-            ],
+          bottomSheet: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    VisitStore(suppId: widget.proList['sid']),
+                              ));
+                        },
+                        icon: const Icon(Icons.store)),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.shopping_cart)),
+                  ],
+                ),
+                yellowButtonCstm(
+                    label: "Add to cart",
+                    onPressed: () {},
+                    width: 0.55,
+                    colore: Colors.yellow)
+              ],
+            ),
           ),
         ),
       ),
