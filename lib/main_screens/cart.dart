@@ -1,3 +1,4 @@
+import 'package:bake_store/main_screens/dashboard.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
@@ -94,24 +95,42 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                           child: Row(
                                             children: [
-                                              IconButton(
-                                                  onPressed: () {
-                                                    cart.decrement(Product);
-                                                  },
-                                                  icon: const Icon(
-                                                    FontAwesomeIcons.minus,
-                                                    size: 18,
-                                                  )),
+                                              Product.qty == 1
+                                                  ? IconButton(
+                                                      onPressed: () {},
+                                                      icon: const Icon(
+                                                        Icons.delete_forever,
+                                                        size: 18,
+                                                      ))
+                                                  : IconButton(
+                                                      onPressed: () {
+                                                        cart.decrement(Product);
+                                                      },
+                                                      icon: const Icon(
+                                                        FontAwesomeIcons.minus,
+                                                        size: 18,
+                                                      )),
                                               Text(
                                                 Product.qty.toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "Acme"),
+                                                style:
+                                                    Product.qty == Product.qntty
+                                                        ? const TextStyle(
+                                                            fontSize: 20,
+                                                            fontFamily: "Acme",
+                                                            color: Colors.red,
+                                                          )
+                                                        : const TextStyle(
+                                                            fontSize: 20,
+                                                            fontFamily: "Acme"),
                                               ),
                                               IconButton(
-                                                  onPressed: () {
-                                                    cart.increment(Product);
-                                                  },
+                                                  onPressed: Product.qty ==
+                                                          Product.qntty
+                                                      ? null
+                                                      : () {
+                                                          cart.increment(
+                                                              Product);
+                                                        },
                                                   icon: const Icon(
                                                     FontAwesomeIcons.plus,
                                                     size: 18,
