@@ -1,11 +1,14 @@
+import 'package:bake_store/main_screens/cart.dart';
 import 'package:bake_store/main_screens/visit_store.dart';
+import 'package:bake_store/providers/cart_providers.dart';
+import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
-
+import 'package:provider/provider.dart';
 import '../models/product_model.dart';
 import 'full_screen_view.dart';
 
@@ -218,13 +221,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       width: 20,
                     ),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CartScreen(back: AppBarBackButton()),
+                              ));
+                        },
                         icon: const Icon(Icons.shopping_cart)),
                   ],
                 ),
                 yellowButtonCstm(
                     label: "Add to cart",
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<Cart>().addItem(
+                            widget.proList["proname"],
+                            widget.proList["price"],
+                            1,
+                            widget.proList["instock"],
+                            widget.proList["proimages"],
+                            widget.proList["proid"],
+                            widget.proList["sid"],
+                          );
+                    },
                     width: 0.55,
                     colore: Colors.yellow)
               ],

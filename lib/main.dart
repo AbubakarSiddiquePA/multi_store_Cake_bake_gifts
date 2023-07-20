@@ -3,15 +3,21 @@ import 'package:bake_store/auth/splier_login.dart';
 import 'package:bake_store/auth/splier_signup.dart';
 import 'package:bake_store/main_screens/cstmr_home.dart';
 import 'package:bake_store/main_screens/splier_home.dart';
+import 'package:bake_store/providers/cart_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'auth/login_cust.dart';
 import 'main_screens/welcome_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (_) => Cart(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
