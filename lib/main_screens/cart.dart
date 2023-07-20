@@ -29,7 +29,7 @@ class _CartScreenState extends State<CartScreen> {
             title: const AppBarTitle(title: "Cart"),
             actions: [
               context.watch<Cart>().getItems.isEmpty
-                  ? SizedBox()
+                  ? const SizedBox()
                   : IconButton(
                       onPressed: () {
                         MyAlertDialog.showMyDialogue(
@@ -56,22 +56,22 @@ class _CartScreenState extends State<CartScreen> {
           body: context.watch<Cart>().getItems.isNotEmpty
               //can use also
               // body: Provider.of<Cart>(context, listen: true).getItems.isNotEmpty
-              ? CartItems()
-              : EmptyCart(),
+              ? const CartItems()
+              : const EmptyCart(),
           bottomSheet: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Row(
+                Row(
                   children: [
-                    Text(
+                    const Text(
                       "Total : Rs-",
                       style: TextStyle(fontSize: 18),
                     ),
                     Text(
-                      "00.00",
-                      style: TextStyle(
+                      context.watch<Cart>().totalPrice.toStringAsFixed(2),
+                      style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.red),
