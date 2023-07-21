@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:collection/collection.dart';
 import '../providers/cart_providers.dart';
+import '../widgets/alert_dialg.dart';
 import '../widgets/snackbar.dart';
 
 class WishlistScreen extends StatefulWidget {
@@ -28,29 +29,29 @@ class _WishlistScreenState extends State<WishlistScreen> {
             elevation: 0,
             backgroundColor: Colors.white,
             title: const AppBarTitle(title: "Wishlist"),
-            actions: const [
-              // context.watch<Cart>().getItems.isEmpty
-              //     ? const SizedBox()
-              //     : IconButton(
-              //         onPressed: () {
-              //           MyAlertDialog.showMyDialogue(
-              //             context: context,
-              //             title: "Clear Cart",
-              //             content: "Are you sure to clear Cart",
-              //             tabNo: () {
-              //               Navigator.pop(context);
-              //             },
-              //             tabYes: () {
-              //               context.read<Cart>().clearCart();
-              //               Navigator.pop(context);
-              //             },
-              //           );
-              //         },
-              //         icon: const Icon(
-              //           Icons.delete_forever,
-              //           color: Colors.red,
-              //         ),
-              //       ),
+            actions: [
+              context.watch<Wish>().getWishItems.isEmpty
+                  ? const SizedBox()
+                  : IconButton(
+                      onPressed: () {
+                        MyAlertDialog.showMyDialogue(
+                          context: context,
+                          title: "Clear Wishlist",
+                          content: "Are you sure to clear Wishlist",
+                          tabNo: () {
+                            Navigator.pop(context);
+                          },
+                          tabYes: () {
+                            context.read<Wish>().clearWishlist();
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.delete_forever,
+                        color: Colors.red,
+                      ),
+                    ),
             ],
             // leading: const AppBarBackButton(),
           ),
