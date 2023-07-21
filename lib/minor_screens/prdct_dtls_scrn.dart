@@ -142,11 +142,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ? context
                                           .read<Wish>()
                                           .removeThis(widget.proList["proid"])
-                                      :
-                                      // MyMessageHandler.showSnackBar(
-                                      //     _scaffoldKey,
-                                      //     "this item is already in Wishlist")
-                                      context.read<Wish>().addWishItem(
+                                      : context.read<Wish>().addWishItem(
                                             widget.proList["proname"],
                                             widget.proList["price"],
                                             1,
@@ -169,7 +165,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       )
                                     : const Icon(
                                         Icons.favorite_outline,
-                                      ))
+                                      )),
                           ],
                         ),
                         Text(

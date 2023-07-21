@@ -1,8 +1,10 @@
 import 'package:bake_store/providers/wish_provider.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:collection/collection.dart';
+import '../providers/cart_providers.dart';
+import '../widgets/snackbar.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({
@@ -174,11 +176,28 @@ class WishItems extends StatelessWidget {
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      IconButton(
-                                        onPressed: () {},
-                                        icon:
-                                            const Icon(Icons.add_shopping_cart),
-                                      ),
+                                      context
+                                                  .watch<Cart>()
+                                                  .getItems
+                                                  .firstWhereOrNull((element) =>
+                                                      element.documentId ==
+                                                      product.documentId) !=
+                                              null
+                                          ? const SizedBox()
+                                          : IconButton(
+                                              onPressed: () {
+                                                context.read<Cart>().addItem(
+                                                    product.name,
+                                                    product.price,
+                                                    1,
+                                                    product.qntty,
+                                                    product.imagesUrl,
+                                                    product.documentId,
+                                                    product.suppId);
+                                              },
+                                              icon: const Icon(
+                                                  Icons.add_shopping_cart),
+                                            ),
                                     ],
                                   )
                                 ],
