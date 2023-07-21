@@ -4,6 +4,7 @@ import 'package:bake_store/auth/splier_signup.dart';
 import 'package:bake_store/main_screens/cstmr_home.dart';
 import 'package:bake_store/main_screens/splier_home.dart';
 import 'package:bake_store/providers/cart_providers.dart';
+import 'package:bake_store/providers/wish_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'auth/login_cust.dart';
@@ -16,7 +17,10 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => Cart(),
-    )
+    ),
+    ChangeNotifierProvider(
+      create: (_) => Wish(),
+    ),
   ], child: const MyApp()));
 }
 

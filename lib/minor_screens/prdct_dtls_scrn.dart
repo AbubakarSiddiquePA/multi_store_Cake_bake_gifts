@@ -1,6 +1,7 @@
 import 'package:bake_store/main_screens/cart.dart';
 import 'package:bake_store/main_screens/visit_store.dart';
 import 'package:bake_store/providers/cart_providers.dart';
+import 'package:bake_store/providers/wish_provider.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/snackbar.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
@@ -130,7 +131,27 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ],
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context
+                                              .read<Wish>()
+                                              .getWishItems
+                                              .firstWhereOrNull((Product) =>
+                                                  Product.documentId ==
+                                                  widget.proList["proid"]) !=
+                                          null
+                                      ? MyMessageHandler.showSnackBar(
+                                          _scaffoldKey,
+                                          "this item is already in Wishlist")
+                                      : context.read<Wish>().addWishItem(
+                                            widget.proList["proname"],
+                                            widget.proList["price"],
+                                            1,
+                                            widget.proList["instock"],
+                                            widget.proList["proimages"],
+                                            widget.proList["proid"],
+                                            widget.proList["sid"],
+                                          );
+                                },
                                 icon: const Icon(Icons.favorite)),
                           ],
                         ),
