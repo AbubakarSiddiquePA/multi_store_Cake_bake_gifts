@@ -5,7 +5,9 @@ import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import '../providers/wish_provider.dart';
 import '../widgets/yellow_btn.dart';
+import 'package:collection/collection.dart';
 
 class CartScreen extends StatefulWidget {
   final Widget? back;
@@ -202,7 +204,93 @@ class CartItems extends StatelessWidget {
                                         Product.qty == 1
                                             ? IconButton(
                                                 onPressed: () {
-                                                  cart.removeItem(Product);
+                                                  showModalBottomSheet<void>(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return SizedBox(
+                                                        height: 200,
+                                                        child: Center(
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: <Widget>[
+                                                              const Text(
+                                                                  'Are you sure to remove this item ?'),
+                                                              const SizedBox(
+                                                                  height: 20),
+                                                              ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .black),
+                                                                  child:
+                                                                      const Text(
+                                                                    'Move to Wishlist',
+                                                                  ),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    context.read<Wish>().getWishItems.firstWhereOrNull((element) => element.documentId == Product.documentId) !=
+                                                                            null
+                                                                        ? context
+                                                                            .read<
+                                                                                Cart>()
+                                                                            .removeItem(
+                                                                                Product)
+                                                                        : await context.read<Wish>().addWishItem(
+                                                                            Product.name,
+                                                                            Product.price,
+                                                                            1,
+                                                                            Product.qntty,
+                                                                            Product.imagesUrl,
+                                                                            Product.documentId,
+                                                                            Product.suppId);
+                                                                    context
+                                                                        .read<
+                                                                            Cart>()
+                                                                        .removeItem(
+                                                                            Product);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  }),
+                                                              ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .red),
+                                                                  child:
+                                                                      const Text(
+                                                                    'Delete Item',
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    context
+                                                                        .read<
+                                                                            Cart>()
+                                                                        .removeItem(
+                                                                            Product);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  }),
+                                                              ElevatedButton(
+                                                                child:
+                                                                    const Text(
+                                                                  'Cancel ',
+                                                                ),
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
                                                 },
                                                 icon: const Icon(
                                                   Icons.delete_forever,
