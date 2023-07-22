@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../models/product_model.dart';
 import 'full_screen_view.dart';
 import 'package:collection/collection.dart';
+import 'package:badges/badges.dart' as badges;
 
 class ProductDetailsScreen extends StatefulWidget {
   final dynamic proList;
@@ -29,21 +30,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       .where("maincategory", isEqualTo: widget.proList["maincategory"])
       .where("subcategory", isEqualTo: widget.proList["subcategory"])
       .snapshots();
-  late var existingItemWishlist = context
-      .read<Wish>()
-      .getWishItems
-      .firstWhereOrNull(
-          (Product) => Product.documentId == widget.proList["proid"]);
 
   late List<dynamic> imagesList = widget.proList["proimages"];
-
-  late var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
-      (Product) => Product.documentId == widget.proList["proid"]);
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
   @override
   Widget build(BuildContext context) {
+    var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
+        (Product) => Product.documentId == widget.proList["proid"]);
     return Material(
       child: SafeArea(
         child: ScaffoldMessenger(
@@ -141,6 +136,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             IconButton(
                                 onPressed: () {
+                                  var existingItemWishlist = context
+                                      .read<Wish>()
+                                      .getWishItems
+                                      .firstWhereOrNull((Product) =>
+                                          Product.documentId ==
+                                          widget.proList["proid"]);
                                   existingItemWishlist != null
                                       ? context
                                           .read<Wish>()
@@ -274,11 +275,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       back: AppBarBackButton()),
                                 ));
                           },
-                          icon: const Icon(Icons.shopping_cart)),
+                          icon: badges.Badge(
+                              showBadge: context.read<Cart>().getItems.isEmpty
+                                  ? false
+                                  : true,
+                              stackFit: StackFit.expand,
+                              badgeStyle: const badges.BadgeStyle(
+                                  badgeColor: Colors.yellow),
+                              badgeContent: Text(
+                                context
+                                    .watch<Cart>()
+                                    .getItems
+                                    .length
+                                    .toString(),
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              child: const Icon(Icons.shopping_cart))),
                     ],
                   ),
                   yellowButtonCstm(
-                      label: "Add to cart",
+                      label: existingItemCart != null
+                          ? "added to cart"
+                          : "Add to cart",
                       onPressed: () {
                         existingItemCart != null
                             ? MyMessageHandler.showSnackBar(
