@@ -1,13 +1,10 @@
-import 'package:bake_store/main_screens/dashboard.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/alert_dialg.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import '../providers/wish_provider.dart';
+import '../models/cart_model.dart';
 import '../widgets/yellow_btn.dart';
-import 'package:collection/collection.dart';
 
 class CartScreen extends StatefulWidget {
   final Widget? back;
@@ -150,196 +147,10 @@ class CartItems extends StatelessWidget {
         return ListView.builder(
           itemCount: cart.count,
           itemBuilder: (context, index) {
-            final Product = cart.getItems[index];
-            return Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Card(
-                child: SizedBox(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 100,
-                        width: 120,
-                        child: Image.network(Product.imagesUrl.first),
-                      ),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    Product.name,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey.shade700),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    Product.price.toStringAsFixed(2),
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red),
-                                  ),
-                                  Container(
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Product.qty == 1
-                                            ? IconButton(
-                                                onPressed: () {
-                                                  showModalBottomSheet<void>(
-                                                    context: context,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return SizedBox(
-                                                        height: 200,
-                                                        child: Center(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: <Widget>[
-                                                              const Text(
-                                                                  'Are you sure to remove this item ?'),
-                                                              const SizedBox(
-                                                                  height: 20),
-                                                              ElevatedButton(
-                                                                  style: ElevatedButton.styleFrom(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .black),
-                                                                  child:
-                                                                      const Text(
-                                                                    'Move to Wishlist',
-                                                                  ),
-                                                                  onPressed:
-                                                                      () async {
-                                                                    context.read<Wish>().getWishItems.firstWhereOrNull((element) => element.documentId == Product.documentId) !=
-                                                                            null
-                                                                        ? context
-                                                                            .read<
-                                                                                Cart>()
-                                                                            .removeItem(
-                                                                                Product)
-                                                                        : await context.read<Wish>().addWishItem(
-                                                                            Product.name,
-                                                                            Product.price,
-                                                                            1,
-                                                                            Product.qntty,
-                                                                            Product.imagesUrl,
-                                                                            Product.documentId,
-                                                                            Product.suppId);
-                                                                    context
-                                                                        .read<
-                                                                            Cart>()
-                                                                        .removeItem(
-                                                                            Product);
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  }),
-                                                              ElevatedButton(
-                                                                  style: ElevatedButton.styleFrom(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .red),
-                                                                  child:
-                                                                      const Text(
-                                                                    'Delete Item',
-                                                                  ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    context
-                                                                        .read<
-                                                                            Cart>()
-                                                                        .removeItem(
-                                                                            Product);
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  }),
-                                                              ElevatedButton(
-                                                                child:
-                                                                    const Text(
-                                                                  'Cancel ',
-                                                                ),
-                                                                onPressed: () =>
-                                                                    Navigator.pop(
-                                                                        context),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                },
-                                                icon: const Icon(
-                                                  Icons.delete_forever,
-                                                  size: 18,
-                                                ))
-                                            : IconButton(
-                                                onPressed: () {
-                                                  cart.decrement(Product);
-                                                },
-                                                icon: const Icon(
-                                                  FontAwesomeIcons.minus,
-                                                  size: 18,
-                                                )),
-                                        Text(
-                                          Product.qty.toString(),
-                                          style: Product.qty == Product.qntty
-                                              ? const TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: "Acme",
-                                                  color: Colors.red,
-                                                )
-                                              : const TextStyle(
-                                                  fontSize: 20,
-                                                  fontFamily: "Acme"),
-                                        ),
-                                        IconButton(
-                                            onPressed:
-                                                Product.qty == Product.qntty
-                                                    ? null
-                                                    : () {
-                                                        cart.increment(Product);
-                                                      },
-                                            icon: const Icon(
-                                              FontAwesomeIcons.plus,
-                                              size: 18,
-                                            ))
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+            final product = cart.getItems[index];
+            return CartModel(
+              product: product,
+              cart: context.read<Cart>(),
             );
           },
         );
