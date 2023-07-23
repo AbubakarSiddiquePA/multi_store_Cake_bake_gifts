@@ -4,6 +4,7 @@ import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+  int selectedValue = 1;
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
 
@@ -78,17 +80,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Total",
                                     style: TextStyle(),
                                   ),
                                   Text(
                                     '${totalPaid.toStringAsFixed(2)}  Rs',
-                                    style: TextStyle(fontSize: 20),
+                                    style: const TextStyle(fontSize: 20),
                                   ),
                                 ],
                               ),
-                              Divider(
+                              const Divider(
                                 color: Colors.grey,
                                 thickness: 2,
                               ),
@@ -96,7 +98,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "Total Order",
                                     style: TextStyle(
                                       fontSize: 20,
@@ -105,12 +107,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                   Text(
                                     "${totalPrice.toStringAsFixed(2)}  Rs",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey, fontSize: 20),
                                   ),
                                 ],
                               ),
-                              Row(
+                              const Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
@@ -140,6 +142,76 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: [
+                              RadioListTile(
+                                value: 1,
+                                groupValue: selectedValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedValue = value!;
+                                  });
+                                },
+                                title: const Text("Cash On Delivery"),
+                                subtitle:
+                                    const Text("Pay on your comfort zone"),
+                              ),
+                              RadioListTile(
+                                  value: 2,
+                                  groupValue: selectedValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedValue = value!;
+                                    });
+                                  },
+                                  title:
+                                      const Text("Pay via Visa / Master Card"),
+                                  subtitle: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.payment,
+                                        color: Colors.green,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15),
+                                        child: Icon(
+                                          FontAwesomeIcons.ccMastercard,
+                                          color: Colors.orange,
+                                        ),
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.ccVisa,
+                                        color: Colors.blue,
+                                      )
+                                    ],
+                                  )),
+                              RadioListTile(
+                                  value: 3,
+                                  groupValue: selectedValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedValue = value!;
+                                    });
+                                  },
+                                  title: const Text("Pay via UPI"),
+                                  subtitle: const Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.googlePay,
+                                        color: Colors.blue,
+                                      ),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Icon(
+                                        FontAwesomeIcons.applePay,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -151,7 +223,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: yellowButtonCstm(
                         label: "Confirm ${totalPaid.toStringAsFixed(2)} Rs",
-                        onPressed: () {},
+                        onPressed: () {
+                          print(selectedValue);
+                        },
                         width: 1,
                         colore: Colors.green),
                   ),
