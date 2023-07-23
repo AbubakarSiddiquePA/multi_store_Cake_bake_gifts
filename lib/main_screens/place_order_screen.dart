@@ -1,3 +1,4 @@
+import 'package:bake_store/main_screens/payment_screen.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
@@ -19,6 +20,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double totalPrice = context.watch<Cart>().totalPrice;
     return FutureBuilder<DocumentSnapshot>(
       future: customers.doc(FirebaseAuth.instance.currentUser!.uid).get(),
       builder:
@@ -31,7 +33,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
           return const Text("Document does not exist");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Material(
+          return const Material(
             child: Center(
               child: CircularProgressIndicator(
                 color: Colors.green,
@@ -104,10 +106,12 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                       child: Row(
                                         children: [
                                           ClipRRect(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(15),
-                                                bottomLeft:
-                                                    Radius.circular(15)),
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(15),
+                                                    bottomLeft:
+                                                        Radius.circular(15)),
                                             child: SizedBox(
                                               height: 100,
                                               width: 100,
@@ -184,8 +188,14 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: yellowButtonCstm(
-                        label: "Confirm",
-                        onPressed: () {},
+                        label: "Confirm ${totalPrice.toStringAsFixed(2)} Rs",
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PaymentScreen(),
+                              ));
+                        },
                         width: 1,
                         colore: Colors.green),
                   ),
