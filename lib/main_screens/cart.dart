@@ -1,10 +1,10 @@
+import 'package:bake_store/main_screens/place_order_screen.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/alert_dialg.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart_model.dart';
-import '../widgets/yellow_btn.dart';
 
 class CartScreen extends StatefulWidget {
   final Widget? back;
@@ -17,6 +17,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
+    double total = context.watch<Cart>().totalPrice;
     return Material(
       child: SafeArea(
         child: Scaffold(
@@ -69,7 +70,7 @@ class _CartScreenState extends State<CartScreen> {
                       style: TextStyle(fontSize: 18),
                     ),
                     Text(
-                      context.watch<Cart>().totalPrice.toStringAsFixed(2),
+                      total.toStringAsFixed(2),
                       style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -77,11 +78,26 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ],
                 ),
-                yellowButtonCstm(
-                  colore: Colors.yellow,
-                  label: "CHECK OUT",
-                  width: 0.45,
-                  onPressed: () {},
+                Container(
+                  height: 35,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: MaterialButton(
+                    onPressed: total == 0.0
+                        ? null
+                        : () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PlaceOrderScreen(),
+                                ));
+                          },
+                    child: const Text("CHECK OUT"),
+                  ),
                 )
               ],
             ),

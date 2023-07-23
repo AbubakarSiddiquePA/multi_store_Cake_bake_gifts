@@ -62,7 +62,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
         },
       );
     } else {
-      return Center(
+      return const Center(
         child: Text(
           "You have not \n \n picked images yet",
           textAlign: TextAlign.center,
@@ -375,7 +375,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                   backgroundColor: Colors.black,
                   child: imagesFileList!.isEmpty
                       ? const Icon(Icons.photo_library)
-                      : Icon(Icons.delete_forever)),
+                      : const Icon(Icons.delete_forever)),
             ),
             FloatingActionButton(
               onPressed: processing == true

@@ -1,5 +1,4 @@
 import 'package:bake_store/widgets/appbar_widgets.dart';
-import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -149,7 +148,7 @@ class _VisitStoreState extends State<VisitStore> {
                   )
                 ],
               ),
-              leading: YellowBackButton(),
+              leading: const YellowBackButton(),
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -202,7 +201,7 @@ class _VisitStoreState extends State<VisitStore> {
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.green,
               onPressed: () {},
-              child: Icon(FontAwesomeIcons.whatsapp),
+              child: const Icon(FontAwesomeIcons.whatsapp),
             ),
           );
         }
