@@ -224,7 +224,39 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     child: yellowButtonCstm(
                         label: "Confirm ${totalPaid.toStringAsFixed(2)} Rs",
                         onPressed: () {
-                          print(selectedValue);
+                          if (selectedValue == 1) {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 100),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text(
+                                          style: TextStyle(
+                                            fontSize: 24,
+                                          ),
+                                          "pay at your doorStep ${totalPaid.toStringAsFixed(2)} Rs"),
+                                      yellowButtonCstm(
+                                          label:
+                                              "Confirm ${totalPaid.toStringAsFixed(2)} Rs",
+                                          onPressed: () {},
+                                          width: 0.9,
+                                          colore: Colors.green)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else if (selectedValue == 2) {
+                            print("visa");
+                          } else if (selectedValue == 3) {
+                            print("UPI");
+                          }
                         },
                         width: 1,
                         colore: Colors.green),
