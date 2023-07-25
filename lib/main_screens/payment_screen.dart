@@ -276,6 +276,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 "sid": item.suppId,
                                                 "proid": item.documentId,
                                                 "orderid": orderId,
+                                                "ordername": item.name,
                                                 "orderimage":
                                                     item.imagesUrl.first,
                                                 "orderqty": item.qty,
