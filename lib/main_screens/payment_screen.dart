@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
@@ -9,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -22,6 +21,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
   late String orderId;
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
+
+  void showProgress() {
+    ProgressDialog progress = ProgressDialog(context: context);
+    progress.show(
+      max: 100,
+      msg: "Confirming payment please wait....",
+      progressBgColor: Colors.red,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,6 +257,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           label:
                                               "Confirm ${totalPaid.toStringAsFixed(2)} Rs",
                                           onPressed: () async {
+                                            showProgress();
                                             for (var item in context
                                                 .read<Cart>()
                                                 .getItems) {
@@ -278,12 +287,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 "paymentstatus":
                                                     "cash on delivery",
                                                 "orderreview": false,
+                                              }).whenComplete(() async {
+                                                await FirebaseFirestore.instance
+                                                    .runTransaction(
+                                                        (transaction) async {
+                                                  DocumentReference
+                                                      documentReference =
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              "products")
+                                                          .doc(item.documentId);
+                                                  DocumentSnapshot snapshot2 =
+                                                      await transaction.get(
+                                                          documentReference);
+                                                  transaction.update(
+                                                      documentReference, {
+                                                    "instock":
+                                                        snapshot2["instock"] -
+                                                            item.qty
+                                                  });
+                                                });
                                               });
-                                              print("successfully uploaded");
                                             }
+                                            // ignore: use_build_context_synchronously
+                                            context.read<Cart>().clearCart();
+                                            // ignore: use_build_context_synchronously
+                                            Navigator.popUntil(
+                                                context,
+                                                (ModalRoute.withName(
+                                                    "/customer_screen")));
                                           },
                                           width: 0.9,
-                                          colore: Colors.green)
+                                          colore: Colors.green),
                                     ],
                                   ),
                                 ),
