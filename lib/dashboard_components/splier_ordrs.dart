@@ -12,6 +12,30 @@ class SupllierOrders extends StatelessWidget {
         backgroundColor: Colors.white,
         title: const AppBarTitle(title: "Supllier Orders"),
         leading: const AppBarBackButton(),
+        bottom: const TabBar(tabs: [
+          RepeatedTab(label: "Preparing"),
+          RepeatedTab(label: "Shipping"),
+          RepeatedTab(label: "Delivered")
+        ]),
+      ),
+    );
+  }
+}
+
+class RepeatedTab extends StatelessWidget {
+  final String label;
+  const RepeatedTab({super.key, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Tab(
+      child: Center(
+        child: Text(
+          label,
+          style: TextStyle(
+            color: Colors.grey,
+          ),
+        ),
       ),
     );
   }
