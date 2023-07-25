@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
@@ -6,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -16,6 +19,7 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   int selectedValue = 1;
+  late String orderId;
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
 
@@ -237,14 +241,47 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 24,
                                           ),
                                           "pay at your doorStep ${totalPaid.toStringAsFixed(2)} Rs"),
                                       yellowButtonCstm(
                                           label:
                                               "Confirm ${totalPaid.toStringAsFixed(2)} Rs",
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            for (var item in context
+                                                .read<Cart>()
+                                                .getItems) {
+                                              CollectionReference orderRef =
+                                                  FirebaseFirestore.instance
+                                                      .collection("orders");
+                                              orderId = const Uuid().v4();
+                                              await orderRef.doc(orderId).set({
+                                                "cid": data['cid'],
+                                                "custname": data['name'],
+                                                "email": data['email'],
+                                                "address": data['address'],
+                                                "phone": data['phone'],
+                                                "profileimage":
+                                                    data['profileimage'],
+                                                "sid": item.suppId,
+                                                "proid": item.documentId,
+                                                "orderid": orderId,
+                                                "orderimage":
+                                                    item.imagesUrl.first,
+                                                "orderqty": item.qty,
+                                                "orderprice":
+                                                    item.qty * item.price,
+                                                "deliverystatus": "preparing",
+                                                "deliverydate": "",
+                                                "orderdate": DateTime.now(),
+                                                "paymentstatus":
+                                                    "cash on delivery",
+                                                "orderreview": false,
+                                              });
+                                              print("successfully uploaded");
+                                            }
+                                          },
                                           width: 0.9,
                                           colore: Colors.green)
                                     ],
