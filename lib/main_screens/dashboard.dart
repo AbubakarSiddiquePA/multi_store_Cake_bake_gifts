@@ -92,7 +92,7 @@ class DashboardScreen extends StatelessWidget {
                   child: Card(
                     elevation: 20,
                     shadowColor: Colors.black,
-                    color: Colors.lightGreen[200],
+                    color: Colors.lime.shade200,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [

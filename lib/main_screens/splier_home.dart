@@ -38,8 +38,8 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Material(
-            child: const Center(
+          return const Material(
+            child: Center(
               child: CircularProgressIndicator(),
             ),
           );
@@ -54,10 +54,12 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
             selectedItemColor: Colors.black,
             items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.home), label: "Home"),
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.category), label: "Category"),
-              BottomNavigationBarItem(icon: Icon(Icons.store), label: "Stores"),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.store), label: "Stores"),
               BottomNavigationBarItem(
                   icon: badges.Badge(
                       showBadge: snapshot.data!.docs.isEmpty ? false : true,
@@ -69,9 +71,9 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                      child: Icon(Icons.dashboard)),
+                      child: const Icon(Icons.dashboard)),
                   label: "Dashboard"),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.upload), label: "Upload"),
             ],
             onTap: (index) {
