@@ -33,7 +33,7 @@ List<Widget> pages = [
   const EditBuisness(),
   const ManageProduct(),
   const BalanceScreen(),
-  const SupplierStatics()
+  const Statics(),
 ];
 
 class DashboardScreen extends StatelessWidget {
