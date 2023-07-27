@@ -32,7 +32,7 @@ List<Widget> pages = [
   const SupllierOrders(),
   const EditBuisness(),
   const ManageProduct(),
-  const BalanceScreen(),
+  const Balance(),
   const Statics(),
 ];
 

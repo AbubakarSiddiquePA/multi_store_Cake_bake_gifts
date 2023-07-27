@@ -117,7 +117,7 @@ class StaticsModel extends StatelessWidget {
                   count: value,
                   decimal: decimal,
                 ),
-                Text(style: TextStyle(color: Colors.white), rs.toString())
+                Text(style: const TextStyle(color: Colors.white), rs.toString())
               ],
             )),
       ],
