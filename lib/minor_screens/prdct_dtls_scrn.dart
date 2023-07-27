@@ -62,7 +62,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           height: MediaQuery.of(context).size.height * 0.45,
                           child: Swiper(
                             pagination: const SwiperPagination(
-                                builder: SwiperPagination.fraction),
+                                builder: SwiperPagination.dots),
                             itemBuilder: (context, index) {
                               return Image(
                                   image: NetworkImage(imagesList[index]));
