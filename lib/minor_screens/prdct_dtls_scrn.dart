@@ -168,7 +168,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           .removeThis(widget.proList["proid"])
                                       : context.read<Wish>().addWishItem(
                                             widget.proList["proname"],
-                                            widget.proList["price"],
+                                            onSale != 0
+                                                ? ((1 - (onSale / 100)) *
+                                                    widget.proList["price"])
+                                                : widget.proList["price"],
                                             1,
                                             widget.proList["instock"],
                                             widget.proList["proimages"],
@@ -336,7 +339,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         } else {
                           context.read<Cart>().addItem(
                                 widget.proList["proname"],
-                                widget.proList["price"],
+                                onSale != 0
+                                    ? ((1 - (onSale / 100)) *
+                                        widget.proList["price"])
+                                    : widget.proList["price"],
                                 1,
                                 widget.proList["instock"],
                                 widget.proList["proimages"],

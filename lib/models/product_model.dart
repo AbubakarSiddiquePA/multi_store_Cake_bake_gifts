@@ -117,7 +117,11 @@ class _ProductModelState extends State<ProductModel> {
                                               widget.products["proid"])
                                           : context.read<Wish>().addWishItem(
                                                 widget.products["proname"],
-                                                widget.products["price"],
+                                                onSale != 0
+                                                    ? ((1 - (onSale / 100)) *
+                                                        widget
+                                                            .products["price"])
+                                                    : widget.products["price"],
                                                 1,
                                                 widget.products["instock"],
                                                 widget.products["proimages"],
