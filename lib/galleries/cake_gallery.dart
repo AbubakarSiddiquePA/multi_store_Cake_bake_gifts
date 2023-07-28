@@ -59,17 +59,6 @@ class _CakeGalleryScreenState extends State<CakeGalleryScreen> {
               },
               staggeredTileBuilder: (context) => const StaggeredTile.fit(1)),
         );
-        // return ListView(
-        //   children: snapshot.data!.docs.map((DocumentSnapshot document) {
-        //     Map<String, dynamic> data =
-        //         document.data()! as Map<String, dynamic>;
-        //     return ListTile(
-        //       leading: Image(image: NetworkImage(data["proname"][0])),
-        //       title: Text(data['proname']),
-        //       subtitle: Text(data['price'].toString()),
-        //     );
-        //   }).toList(),
-        // );
       },
     );
   }

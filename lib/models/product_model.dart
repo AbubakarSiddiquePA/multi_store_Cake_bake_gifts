@@ -16,6 +16,7 @@ class ProductModel extends StatefulWidget {
 class _ProductModelState extends State<ProductModel> {
   @override
   Widget build(BuildContext context) {
+    var onSale = widget.products["discount"];
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -61,13 +62,42 @@ class _ProductModelState extends State<ProductModel> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              widget.products["price"].toStringAsFixed(2) +
-                                  (" \$"),
-                              style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
+                            Row(
+                              children: [
+                                Text("Rs ",
+                                    style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                  widget.products["price"].toStringAsFixed(2),
+                                  style: widget.products["discount"] != 0
+                                      ? TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 11,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          fontWeight: FontWeight.bold)
+                                      : TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                onSale != 0
+                                    ? Text(
+                                        ((1 - (onSale / 100)) *
+                                                widget.products["price"])
+                                            .toStringAsFixed(2),
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : const Text("data")
+                              ],
                             ),
                             widget.products["sid"] ==
                                     FirebaseAuth.instance.currentUser!.uid
@@ -131,8 +161,7 @@ class _ProductModelState extends State<ProductModel> {
                             topRight: Radius.circular(15),
                           )),
                       child: Center(
-                        child: Text(
-                            "Save ${widget.products["discount"].toString()} %"),
+                        child: Text("Save ${onSale.toString()} %"),
                       ),
                     ),
                   )

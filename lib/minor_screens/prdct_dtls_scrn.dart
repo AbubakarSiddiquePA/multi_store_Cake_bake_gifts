@@ -25,8 +25,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  late final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance
-      .collection('products')
+  late final Stream<QuerySnapshot> _proListStream = FirebaseFirestore.instance
+      .collection('proList')
       .where("maincategory", isEqualTo: widget.proList["maincategory"])
       .where("subcategory", isEqualTo: widget.proList["subcategory"])
       .snapshots();
@@ -37,6 +37,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       GlobalKey<ScaffoldMessengerState>();
   @override
   Widget build(BuildContext context) {
+    var onSale = widget.proList["discount"];
     var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
         (Product) => Product.documentId == widget.proList["proid"]);
     return Material(
@@ -118,20 +119,39 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           children: [
                             Row(
                               children: [
-                                const Text(
-                                  "RS ",
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                Text("Rs ",
+                                    style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
                                 Text(
-                                  widget.proList['price'].toStringAsFixed(2),
-                                  style: const TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                  widget.proList["price"].toStringAsFixed(2),
+                                  style: widget.proList["discount"] != 0
+                                      ? TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 11,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                          fontWeight: FontWeight.bold)
+                                      : TextStyle(
+                                          color: Colors.grey.shade600,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                 ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                onSale != 0
+                                    ? Text(
+                                        ((1 - (onSale / 100)) *
+                                                widget.proList["price"])
+                                            .toStringAsFixed(2),
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    : const Text("data")
                               ],
                             ),
                             IconButton(
@@ -207,7 +227,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   SizedBox(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: _productsStream,
+                      stream: _proListStream,
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.hasError) {

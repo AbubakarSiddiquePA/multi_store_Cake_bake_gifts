@@ -159,6 +159,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
         _formKey.currentState!.reset();
       });
     } else {
+      // ignore: avoid_print
       print("no images");
     }
   }
