@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -310,13 +311,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                 });
                                               });
                                             }
-                                            // ignore: use_build_context_synchronously
-                                            context.read<Cart>().clearCart();
-                                            // ignore: use_build_context_synchronously
-                                            Navigator.popUntil(
-                                                context,
-                                                (ModalRoute.withName(
-                                                    "/customer_screen")));
+                                            await Future.delayed(const Duration(
+                                                    microseconds: 100))
+                                                .whenComplete(() {
+                                              context.read<Cart>().clearCart();
+                                              Navigator.popUntil(
+                                                  context,
+                                                  (ModalRoute.withName(
+                                                      "/customer_screen")));
+                                            });
                                           },
                                           width: 0.9,
                                           colore: Colors.green),

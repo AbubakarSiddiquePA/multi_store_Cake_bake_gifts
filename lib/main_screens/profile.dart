@@ -327,13 +327,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     // Perform the log out operation
                                                     await FirebaseAuth.instance
                                                         .signOut();
-                                                    // ignore: use_build_context_synchronously
-                                                    Navigator.pop(context);
-                                                    // ignore: use_build_context_synchronously
-                                                    Navigator
-                                                        .pushReplacementNamed(
-                                                            context,
-                                                            "/welcome_screen");
+                                                    await Future.delayed(
+                                                            const Duration(
+                                                                microseconds:
+                                                                    100))
+                                                        .whenComplete(() {
+                                                      Navigator.pop(context);
+                                                      Navigator
+                                                          .pushReplacementNamed(
+                                                              context,
+                                                              "/welcome_screen");
+                                                    });
                                                   });
                                             },
                                           ),
@@ -369,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         }
 
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(
             color: Colors.green,
           ),

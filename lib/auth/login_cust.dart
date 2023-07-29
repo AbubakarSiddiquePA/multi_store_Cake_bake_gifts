@@ -21,6 +21,10 @@ class _CustomerLoginState extends State<CustomerLogin> {
 
   bool passwordVisibility = false;
 
+  void navigate() {
+    Navigator.pushReplacementNamed(context, "/customer_screen");
+  }
+
   void logIn() async {
     setState(() {
       processing = true;
@@ -34,8 +38,7 @@ class _CustomerLoginState extends State<CustomerLogin> {
         //just for reseting current values
 
         _formKey.currentState!.reset();
-
-        Navigator.pushReplacementNamed(context, "/customer_screen");
+        navigate();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           setState(() {
