@@ -20,7 +20,6 @@ void main() async {
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
 
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
