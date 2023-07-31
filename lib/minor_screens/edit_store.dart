@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/snackbar.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -103,12 +105,26 @@ class _EditStoreState extends State<EditStore> {
     }
   }
 
+  editStoreDate() async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection("suppliers")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      transaction.update(documentReference, {
+        "storename": storeName,
+        "phone": phone,
+        "storelogo": storeLogo,
+        "coverimage": coverImage,
+      });
+    }).whenComplete(() => Navigator.pop(context));
+  }
+
   saveChanges() async {
     if (formKey.currentState!.validate()) {
       //continue
       formKey.currentState!.save();
-      await uploadStoreLogo().whenComplete(
-          () async => await uploadCoverImage().whenComplete(() => null));
+      await uploadStoreLogo().whenComplete(() async =>
+          await uploadCoverImage().whenComplete(() => editStoreDate()));
     } else {
       MyMessageHandler.showSnackBar(
           scaffoldKey, "please fill all fields first");
@@ -146,7 +162,7 @@ class _EditStoreState extends State<EditStore> {
                       CircleAvatar(
                         radius: 60,
                         backgroundImage:
-                            NetworkImage(widget.data["storelogo"].toString()),
+                            NetworkImage(widget.data["storeLogo"].toString()),
                       ),
                       Column(
                         children: [

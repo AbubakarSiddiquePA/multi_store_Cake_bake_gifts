@@ -53,10 +53,15 @@ class _VisitStoreState extends State<VisitStore> {
             backgroundColor: Colors.blueGrey.shade100,
             appBar: AppBar(
               toolbarHeight: 100,
-              flexibleSpace: Image.asset(
-                "images/logo/app_logo1.png",
-                fit: BoxFit.cover,
-              ),
+              flexibleSpace: data["coverimage"] == ""
+                  ? Image.asset(
+                      "images/logo/app_logo1.png",
+                      fit: BoxFit.cover,
+                    )
+                  : Image.network(
+                      data["coverimage"],
+                      fit: BoxFit.cover,
+                    ),
               title: Row(
                 children: [
                   Container(
