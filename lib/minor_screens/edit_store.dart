@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/snackbar.dart';
@@ -28,6 +29,7 @@ class _EditStoreState extends State<EditStore> {
   late String phone;
   late String storeLogo;
   late String coverImage;
+  bool processing = false;
 
   final ImagePicker _picker = ImagePicker();
   pickStoreLogo() async {
@@ -105,13 +107,13 @@ class _EditStoreState extends State<EditStore> {
     }
   }
 
-  editStoreDate() async {
+  editStoreData() async {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentReference documentReference = FirebaseFirestore.instance
           .collection("suppliers")
           .doc(FirebaseAuth.instance.currentUser!.uid);
       transaction.update(documentReference, {
-        "storename": storeName,
+        "storeName": storeName,
         "phone": phone,
         "storelogo": storeLogo,
         "coverimage": coverImage,
@@ -123,8 +125,11 @@ class _EditStoreState extends State<EditStore> {
     if (formKey.currentState!.validate()) {
       //continue
       formKey.currentState!.save();
+      setState(() {
+        processing = true;
+      });
       await uploadStoreLogo().whenComplete(() async =>
-          await uploadCoverImage().whenComplete(() => editStoreDate()));
+          await uploadCoverImage().whenComplete(() => editStoreData()));
     } else {
       MyMessageHandler.showSnackBar(
           scaffoldKey, "please fill all fields first");
@@ -319,13 +324,21 @@ class _EditStoreState extends State<EditStore> {
                         },
                         width: 0.25,
                         colore: Colors.blue),
-                    yellowButtonCstm(
-                        label: "Save Changes",
-                        onPressed: () {
-                          saveChanges();
-                        },
-                        width: 0.5,
-                        colore: Colors.green)
+                    processing == true
+                        ? yellowButtonCstm(
+                            label: "please wait ",
+                            onPressed: () {
+                              null;
+                            },
+                            width: 0.5,
+                            colore: Colors.green)
+                        : yellowButtonCstm(
+                            label: "Save Changes",
+                            onPressed: () {
+                              saveChanges();
+                            },
+                            width: 0.5,
+                            colore: Colors.green)
                   ],
                 ),
               )
