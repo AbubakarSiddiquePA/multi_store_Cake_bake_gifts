@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
 import 'package:uuid/uuid.dart';
+import 'package:expandable/expandable.dart';
 
 class EditProduct extends StatefulWidget {
   final dynamic items;
@@ -181,6 +182,7 @@ class _EditProductState extends State<EditProduct> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
@@ -193,137 +195,75 @@ class _EditProductState extends State<EditProduct> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
+                  Column(
                     children: [
-                      Container(
-                          color: Colors.blueGrey.shade100,
-                          height: MediaQuery.of(context).size.width * 0.5,
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: previewCurrentImages()),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              " Main category",
-                              style: TextStyle(color: Colors.red),
-                            ),
-                            Container(
-                              margin: EdgeInsets.all(8),
-                              padding: const EdgeInsets.all(6),
-                              // constraints: BoxConstraints(maxHeight: 25),
-                              decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                  child: Text(widget.items["maincategory"])),
-                            ),
-                            Column(
+                      Row(
+                        children: [
+                          Container(
+                              color: Colors.blueGrey.shade100,
+                              height: MediaQuery.of(context).size.width * 0.5,
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: previewCurrentImages()),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
                               children: [
                                 const Text(
-                                  " Sub category",
+                                  " Main category",
                                   style: TextStyle(color: Colors.red),
                                 ),
                                 Container(
                                   margin: EdgeInsets.all(8),
                                   padding: const EdgeInsets.all(6),
-                                  // constraints: BoxConstraints(maxHeight: 25),
+                                  constraints: BoxConstraints(
+                                      maxHeight: size.width * 0.075),
                                   decoration: BoxDecoration(
                                     color: Colors.yellow,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Center(
-                                      child: Text(widget.items["subcategory"])),
+                                      child:
+                                          Text(widget.items["maincategory"])),
+                                ),
+                                Column(
+                                  children: [
+                                    const Text(
+                                      " Sub category",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(6),
+                                      // constraints: BoxConstraints(maxHeight: 25),
+                                      decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                              widget.items["subcategory"])),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        color: Colors.blueGrey.shade100,
-                        height: MediaQuery.of(context).size.width * 0.5,
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: imagesFileList != null
-                            ? previewImages()
-                            : const Center(
-                                child: Text(
-                                  "You have not \n \n picked images yet",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              "* Select Main category",
-                              style: TextStyle(color: Colors.red),
+                      ExpandablePanel(
+                          theme: const ExpandableThemeData(),
+                          header: const Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              "Change Images & Categories",
+                              style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            DropdownButton(
-                              iconEnabledColor: Colors.red,
-                              dropdownColor: Colors.white,
-
-                              value: mainCategoryValue,
-                              // items: ["Cake", "Bake", "Gift", "Hampers"]
-                              items: maincateg
-                                  .map<DropdownMenuItem<String>>((value) {
-                                return DropdownMenuItem(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-
-                              onChanged: (String? value) {
-                                selectedMainCategory(value);
-                              },
-                            ),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            Column(
-                              children: [
-                                const Text(
-                                  "* Select Sub category",
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                                DropdownButton(
-                                  iconEnabledColor: Colors.red,
-                                  iconDisabledColor: Colors.black,
-                                  menuMaxHeight: 500,
-                                  dropdownColor: Colors.white,
-                                  disabledHint: const Text("select category"),
-                                  value: subCategValue,
-                                  // items: ["Cake", "Bake", "Gift", "Hampers"]
-                                  items: subCategList
-                                      .map<DropdownMenuItem<String>>((value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-
-                                  onChanged: (String? value) {
-                                    print(value);
-                                    setState(() {
-                                      subCategValue = value!;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
+                          ),
+                          collapsed: const SizedBox(),
+                          expanded: changeImages(size))
                     ],
                   ),
                   const SizedBox(
@@ -469,6 +409,90 @@ class _EditProductState extends State<EditProduct> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget changeImages(Size size) {
+    return Row(
+      children: [
+        Container(
+          color: Colors.blueGrey.shade100,
+          height: MediaQuery.of(context).size.width * 0.5,
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: imagesFileList != null
+              ? previewImages()
+              : const Center(
+                  child: Text(
+                    "You have not \n \n picked images yet",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const Text(
+                "* Select Main category",
+                style: TextStyle(color: Colors.red),
+              ),
+              DropdownButton(
+                iconEnabledColor: Colors.red,
+                dropdownColor: Colors.white,
+
+                value: mainCategoryValue,
+                // items: ["Cake", "Bake", "Gift", "Hampers"]
+                items: maincateg.map<DropdownMenuItem<String>>((value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+
+                onChanged: (String? value) {
+                  selectedMainCategory(value);
+                },
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              Column(
+                children: [
+                  const Text(
+                    "* Select Sub category",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  DropdownButton(
+                    iconEnabledColor: Colors.red,
+                    iconDisabledColor: Colors.black,
+                    menuMaxHeight: 500,
+                    dropdownColor: Colors.white,
+                    disabledHint: const Text("select category"),
+                    value: subCategValue,
+                    // items: ["Cake", "Bake", "Gift", "Hampers"]
+                    items: subCategList.map<DropdownMenuItem<String>>((value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+
+                    onChanged: (String? value) {
+                      print(value);
+                      setState(() {
+                        subCategValue = value!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
