@@ -1,4 +1,4 @@
-import 'package:bake_store/main_screens/visit_store.dart';
+import 'package:bake_store/minor_screens/visit_store.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

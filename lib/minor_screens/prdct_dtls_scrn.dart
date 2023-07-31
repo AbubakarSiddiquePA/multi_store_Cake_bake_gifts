@@ -1,5 +1,5 @@
 import 'package:bake_store/main_screens/cart.dart';
-import 'package:bake_store/main_screens/visit_store.dart';
+import 'package:bake_store/minor_screens/visit_store.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/providers/wish_provider.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
