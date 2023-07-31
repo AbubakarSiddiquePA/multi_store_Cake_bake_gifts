@@ -1,4 +1,4 @@
-import 'package:bake_store/main_screens/payment_screen.dart';
+// import 'package:bake_store/main_screens/payment_screen.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
@@ -190,11 +190,11 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                     child: yellowButtonCstm(
                         label: "Confirm ${totalPrice.toStringAsFixed(2)} Rs",
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const PaymentScreen(),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const PaymentScreen(),
+                          //     ));
                         },
                         width: 1,
                         colore: Colors.green),
