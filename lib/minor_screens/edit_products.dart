@@ -213,7 +213,7 @@ class _EditProductState extends State<EditProduct> {
                                   style: TextStyle(color: Colors.red),
                                 ),
                                 Container(
-                                  margin: EdgeInsets.all(8),
+                                  margin: const EdgeInsets.all(8),
                                   padding: const EdgeInsets.all(6),
                                   constraints: BoxConstraints(
                                       maxHeight: size.width * 0.075),
@@ -232,7 +232,7 @@ class _EditProductState extends State<EditProduct> {
                                       style: TextStyle(color: Colors.red),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.all(8),
+                                      margin: const EdgeInsets.all(8),
                                       padding: const EdgeInsets.all(6),
                                       // constraints: BoxConstraints(maxHeight: 25),
                                       decoration: BoxDecoration(
@@ -280,6 +280,8 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.38,
                           child: TextFormField(
+                              initialValue:
+                                  widget.items["price"].toStringAsFixed(2),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return "please enter price";
@@ -302,6 +304,7 @@ class _EditProductState extends State<EditProduct> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.38,
                           child: TextFormField(
+                              initialValue: widget.items["discount"].toString(),
                               maxLength: 2,
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -328,6 +331,7 @@ class _EditProductState extends State<EditProduct> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextFormField(
+                          initialValue: widget.items["instock"].toString(),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "please enter quantity";
@@ -348,6 +352,7 @@ class _EditProductState extends State<EditProduct> {
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       child: TextFormField(
+                          initialValue: widget.items["proname"],
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "please enter Product Name";
@@ -368,6 +373,7 @@ class _EditProductState extends State<EditProduct> {
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       child: TextFormField(
+                          initialValue: widget.items["prodesc"],
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "please enter Product Description";
@@ -413,67 +419,41 @@ class _EditProductState extends State<EditProduct> {
   }
 
   Widget changeImages(Size size) {
-    return Row(
+    return Column(
       children: [
-        Container(
-          color: Colors.blueGrey.shade100,
-          height: MediaQuery.of(context).size.width * 0.5,
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: imagesFileList != null
-              ? previewImages()
-              : const Center(
-                  child: Text(
-                    "You have not \n \n picked images yet",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
+        Row(
+          children: [
+            Container(
+              color: Colors.blueGrey.shade100,
+              height: MediaQuery.of(context).size.width * 0.5,
+              width: MediaQuery.of(context).size.width * 0.5,
+              child: imagesFileList != null
+                  ? previewImages()
+                  : const Center(
+                      child: Text(
+                        "You have not \n \n picked images yet",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              const Text(
-                "* Select Main category",
-                style: TextStyle(color: Colors.red),
-              ),
-              DropdownButton(
-                iconEnabledColor: Colors.red,
-                dropdownColor: Colors.white,
-
-                value: mainCategoryValue,
-                // items: ["Cake", "Bake", "Gift", "Hampers"]
-                items: maincateg.map<DropdownMenuItem<String>>((value) {
-                  return DropdownMenuItem(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-
-                onChanged: (String? value) {
-                  selectedMainCategory(value);
-                },
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Column(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 children: [
                   const Text(
-                    "* Select Sub category",
+                    "* Select Main category",
                     style: TextStyle(color: Colors.red),
                   ),
                   DropdownButton(
                     iconEnabledColor: Colors.red,
-                    iconDisabledColor: Colors.black,
-                    menuMaxHeight: 500,
                     dropdownColor: Colors.white,
-                    disabledHint: const Text("select category"),
-                    value: subCategValue,
+
+                    value: mainCategoryValue,
                     // items: ["Cake", "Bake", "Gift", "Hampers"]
-                    items: subCategList.map<DropdownMenuItem<String>>((value) {
+                    items: maincateg.map<DropdownMenuItem<String>>((value) {
                       return DropdownMenuItem(
                         value: value,
                         child: Text(value),
@@ -481,17 +461,67 @@ class _EditProductState extends State<EditProduct> {
                     }).toList(),
 
                     onChanged: (String? value) {
-                      print(value);
-                      setState(() {
-                        subCategValue = value!;
-                      });
+                      selectedMainCategory(value);
                     },
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Column(
+                    children: [
+                      const Text(
+                        "* Select Sub category",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      DropdownButton(
+                        iconEnabledColor: Colors.red,
+                        iconDisabledColor: Colors.black,
+                        menuMaxHeight: 500,
+                        dropdownColor: Colors.white,
+                        disabledHint: const Text("select category"),
+                        value: subCategValue,
+                        // items: ["Cake", "Bake", "Gift", "Hampers"]
+                        items:
+                            subCategList.map<DropdownMenuItem<String>>((value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+
+                        onChanged: (String? value) {
+                          print(value);
+                          setState(() {
+                            subCategValue = value!;
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: imagesFileList!.isNotEmpty
+                ? yellowButtonCstm(
+                    label: "Reset Images",
+                    onPressed: () {
+                      setState(() {
+                        imagesFileList = [];
+                      });
+                    },
+                    width: 0.6,
+                    colore: Colors.blue)
+                : yellowButtonCstm(
+                    label: "Change Images",
+                    onPressed: () {
+                      pickProductImages();
+                    },
+                    width: 0.6,
+                    colore: Colors.blue))
       ],
     );
   }
