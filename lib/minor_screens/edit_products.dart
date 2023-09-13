@@ -3,12 +3,10 @@ import 'package:bake_store/utilities/categ_list.dart';
 import 'package:bake_store/widgets/snackbar.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
-import 'package:uuid/uuid.dart';
 import 'package:expandable/expandable.dart';
 
 class EditProduct extends StatefulWidget {
@@ -37,7 +35,7 @@ class _EditProductState extends State<EditProduct> {
 
   final ImagePicker _picker = ImagePicker();
   List<XFile>? imagesFileList = [];
-  List<String> imagesUrlList = [];
+  List<dynamic> imagesUrlList = [];
 
   dynamic _pickedImageError;
 
@@ -106,17 +104,12 @@ class _EditProductState extends State<EditProduct> {
     });
   }
 
-  Future<void> uploadImages() async {
-    if (mainCategoryValue != "select category" &&
-        subCategValue != "subcategory") {
-      if (_formKey.currentState!.validate()) {
-        //by using on save its going to wait until we save data
-        //hear we save by on tapping on upload button
-        _formKey.currentState!.save();
-        if (imagesFileList!.isNotEmpty) {
-          setState(() {
-            processing = true;
-          });
+  Future uploadImages() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      if (imagesFileList!.isNotEmpty) {
+        if (mainCategoryValue != "select category" &&
+            subCategValue != "subcategory") {
           try {
             for (var image in imagesFileList!) {
               firebase_storage.Reference ref = firebase_storage
@@ -131,54 +124,113 @@ class _EditProductState extends State<EditProduct> {
           } catch (e) {
             print(e);
           }
-          //because we have few images(multiple) we are setting loop
         } else {
-          MyMessageHandler.showSnackBar(_scaffoldKey, "please pick images");
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, "please select categories");
         }
       } else {
-        MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
+        imagesUrlList = widget.items["proimages"];
       }
     } else {
-      MyMessageHandler.showSnackBar(_scaffoldKey, "please select categories");
+      MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
     }
   }
 
-  void uploadData() async {
-    if (imagesUrlList.isNotEmpty) {
-      CollectionReference productRef =
-          FirebaseFirestore.instance.collection("products");
-      productId = const Uuid().v4();
-      await productRef.doc(productId).set({
-        "proid": productId,
-        "maincategory": mainCategoryValue,
-        "subcategory": subCategValue,
+  editProductData() async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection("products")
+          .doc(widget.items["proid"]);
+      transaction.update(documentReference, {
+        // "maincategory": mainCategoryValue,
+        // "subcategory": subCategValue,
         "price": price,
         "instock": quantity,
         "proname": productName,
         "prodesc": productDescription,
-        "sid": FirebaseAuth.instance.currentUser!.uid,
         "proimages": imagesUrlList,
         "discount": discount,
-      }).whenComplete(() {
-        setState(() {
-          processing = false;
-          imagesFileList = [];
-          mainCategoryValue = "select category";
-          // subCategValue = "subcategory";
-          subCategList = [];
-          imagesUrlList = [];
-        });
-        _formKey.currentState!.reset();
       });
-    } else {
-      // ignore: avoid_print
-      print("no images");
-    }
+    }).whenComplete(() => Navigator.pop(context));
   }
 
-  void uploadProduct() async {
-    await uploadImages().whenComplete(() => uploadData());
+  saveChanges() async {
+    await uploadImages().whenComplete(() => editProductData());
   }
+
+  // Future<void> uploadImages() async {
+  //   if (mainCategoryValue != "select category" &&
+  //       subCategValue != "subcategory") {
+  //     if (_formKey.currentState!.validate()) {
+  //       //by using on save its going to wait until we save data
+  //       //hear we save by on tapping on upload button
+  //       _formKey.currentState!.save();
+  //       if (imagesFileList!.isNotEmpty) {
+  //         setState(() {
+  //           processing = true;
+  //         });
+  //         try {
+  //           for (var image in imagesFileList!) {
+  //             firebase_storage.Reference ref = firebase_storage
+  //                 .FirebaseStorage.instance
+  //                 .ref("products/${path.basename(image.path)}");
+  //             await ref.putFile(File(image.path)).whenComplete(() async {
+  //               await ref.getDownloadURL().then((value) {
+  //                 imagesUrlList.add(value);
+  //               });
+  //             });
+  //           }
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //         //because we have few images(multiple) we are setting loop
+  //       } else {
+  //         MyMessageHandler.showSnackBar(_scaffoldKey, "please pick images");
+  //       }
+  //     } else {
+  //       MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
+  //     }
+  //   } else {
+  //     MyMessageHandler.showSnackBar(_scaffoldKey, "please select categories");
+  //   }
+  // }
+
+  // void uploadData() async {
+  //   if (imagesUrlList.isNotEmpty) {
+  //     CollectionReference productRef =
+  //         FirebaseFirestore.instance.collection("products");
+  //     productId = const Uuid().v4();
+  //     await productRef.doc(productId).set({
+  //       "proid": productId,
+  //       "maincategory": mainCategoryValue,
+  //       "subcategory": subCategValue,
+  //       "price": price,
+  //       "instock": quantity,
+  //       "proname": productName,
+  //       "prodesc": productDescription,
+  //       "sid": FirebaseAuth.instance.currentUser!.uid,
+  //       "proimages": imagesUrlList,
+  //       "discount": discount,
+  //     }).whenComplete(() {
+  //       setState(() {
+  //         processing = false;
+  //         imagesFileList = [];
+  //         mainCategoryValue = "select category";
+  //         // subCategValue = "subcategory";
+  //         subCategList = [];
+  //         imagesUrlList = [];
+  //       });
+  //       _formKey.currentState!.reset();
+  //     });
+  //   } else {
+  //     // ignore: avoid_print
+  //     print("no images");
+  //   }
+  // }
+
+  // void uploadProduct() async {
+  //   await uploadImages().whenComplete(() => uploadData());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -403,7 +455,7 @@ class _EditProductState extends State<EditProduct> {
                       yellowButtonCstm(
                           label: "Save changes",
                           onPressed: () {
-                            Navigator.pop(context);
+                            saveChanges();
                           },
                           width: 0.5,
                           colore: Colors.green)

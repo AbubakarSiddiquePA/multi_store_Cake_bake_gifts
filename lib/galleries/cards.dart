@@ -24,16 +24,16 @@ class _CardsGalleryState extends State<CardsGallery> {
       stream: _productsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return Text('Something went wrong');
+          return const Text('Something went wrong');
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
         if (snapshot.data!.docs.isEmpty) {
-          return Center(
+          return const Center(
             child: Text(
               "this category has no items yet",
               textAlign: TextAlign.center,
@@ -48,7 +48,7 @@ class _CardsGalleryState extends State<CardsGallery> {
         }
         return SingleChildScrollView(
           child: StaggeredGridView.countBuilder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data!.docs.length,
               crossAxisCount: 2,
@@ -57,7 +57,7 @@ class _CardsGalleryState extends State<CardsGallery> {
                   products: snapshot.data!.docs[index],
                 );
               },
-              staggeredTileBuilder: (context) => StaggeredTile.fit(1)),
+              staggeredTileBuilder: (context) => const StaggeredTile.fit(1)),
         );
         // return ListView(
         //   children: snapshot.data!.docs.map((DocumentSnapshot document) {

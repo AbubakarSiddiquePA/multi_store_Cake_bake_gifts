@@ -43,8 +43,15 @@ class _ProductModelState extends State<ProductModel> {
                     child: Container(
                       constraints:
                           const BoxConstraints(minHeight: 100, maxHeight: 250),
-                      child: Image(
-                          image: NetworkImage(widget.products["proimages"][0])),
+                      child: widget.products["proimages"] != null &&
+                              widget.products["proimages"].isNotEmpty
+                          ? Image(
+                              image:
+                                  NetworkImage(widget.products["proimages"][0]))
+                          : Container(),
+
+                      // child: Image(
+                      //     image: NetworkImage(widget.products["proimages"][0])),
                     ),
                   ),
                   Padding(
