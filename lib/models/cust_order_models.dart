@@ -1,4 +1,6 @@
 import 'package:bake_store/widgets/yellow_btn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -154,70 +156,124 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                                 context: context,
                                 builder: (context) => Material(
                                   color: Colors.white,
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      RatingBar.builder(
-                                        initialRating: 1,
-                                        minRating: 1,
-                                        allowHalfRating: true,
-                                        itemBuilder: (context, _) {
-                                          return const Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                          );
-                                        },
-                                        onRatingUpdate: (value) {
-                                          rate = value;
-                                        },
-                                      ),
-                                      TextField(
-                                        decoration: InputDecoration(
-                                            hintText: "Write a review",
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 150),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        RatingBar.builder(
+                                          initialRating: 1,
+                                          minRating: 1,
+                                          allowHalfRating: true,
+                                          itemBuilder: (context, _) {
+                                            return const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            );
+                                          },
+                                          onRatingUpdate: (value) {
+                                            rate = value;
+                                          },
+                                        ),
+                                        TextField(
+                                          decoration: InputDecoration(
+                                              hintText: "Write a review",
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderSide: const BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 1,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.amber,
+                                                      width: 2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15))),
+                                          onChanged: (value) {
+                                            comment = value;
+                                          },
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            yellowButtonCstm(
+                                                label: "Cancel",
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                width: 0.3,
+                                                colore: Colors.blue),
+                                            const SizedBox(
+                                              width: 20,
                                             ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
-                                                  color: Colors.grey,
-                                                  width: 1,
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
-                                                    color: Colors.amber,
-                                                    width: 2),
-                                                borderRadius:
-                                                    BorderRadius.circular(15))),
-                                        onChanged: (value) {
-                                          comment = value;
-                                        },
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          yellowButtonCstm(
-                                              label: "Cancel",
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              width: 0.3,
-                                              colore: Colors.blue),
-                                          const SizedBox(
-                                            width: 20,
-                                          ),
-                                          yellowButtonCstm(
-                                              label: "Post",
-                                              onPressed: () {},
-                                              width: 0.3,
-                                              colore: Colors.green),
-                                        ],
-                                      )
-                                    ],
+                                            yellowButtonCstm(
+                                                label: "Post",
+                                                onPressed: () async {
+                                                  CollectionReference collRef =
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              "products")
+                                                          .doc(widget
+                                                              .order["proid"])
+                                                          .collection(
+                                                              "reviews");
+                                                  await collRef
+                                                      .doc(FirebaseAuth.instance
+                                                          .currentUser!.uid)
+                                                      .set({
+                                                    "name": widget
+                                                        .order["custname"],
+                                                    "email":
+                                                        widget.order["email"],
+                                                    "rate": rate,
+                                                    "comment": comment,
+                                                    "profileimage": widget
+                                                        .order["profileimage"]
+                                                  }).whenComplete(() async {
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .runTransaction(
+                                                            (transaction) async {
+                                                      DocumentReference
+                                                          documentReference =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "orders")
+                                                              .doc(widget.order[
+                                                                  "orderid"]);
+
+                                                      transaction.update(
+                                                          documentReference, {
+                                                        "orderreview": true
+                                                      });
+                                                    });
+                                                  });
+                                                  await Future.delayed(
+                                                          const Duration(
+                                                              microseconds:
+                                                                  100))
+                                                      .whenComplete(() =>
+                                                          Navigator.pop(
+                                                              context));
+                                                },
+                                                width: 0.3,
+                                                colore: Colors.green),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
