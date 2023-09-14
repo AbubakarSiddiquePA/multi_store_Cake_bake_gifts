@@ -41,6 +41,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       .collection('products')
       .doc(widget.proList["proid"])
       .collection("reviews")
+      .limit(3)
       .snapshots();
 
   late List<dynamic> imagesList = widget.proList["proimages"];
@@ -237,7 +238,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         fontSize: 20,
                         fontWeight: FontWeight.w600),
                   ),
-                  reviews(reviewsStream),
+                  ExpandableTheme(
+                      data: ExpandableThemeData(
+                        iconColor: Colors.blue,
+                        iconSize: 30,
+                      ),
+                      child: reviews(reviewsStream)),
                   const ProductDetailsHeader(
                     label: " similar items ",
                   ),
@@ -416,7 +422,7 @@ class ProductDetailsHeader extends StatelessWidget {
 
 Widget reviews(var reviewsStream) {
   return ExpandablePanel(
-      header: Padding(
+      header: const Padding(
         padding: EdgeInsets.all(10),
         child: Text(
           "reviews",
@@ -424,7 +430,10 @@ Widget reviews(var reviewsStream) {
               color: Colors.blue, fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
-      collapsed: const Text("collapsed"),
+      collapsed: SizedBox(
+        height: 230,
+        child: reviewsAll(reviewsStream),
+      ),
       expanded: reviewsAll(reviewsStream));
 }
 
@@ -461,6 +470,22 @@ Widget reviewsAll(var reviewsStream) {
               backgroundImage:
                   NetworkImage(snapshot2.data!.docs[index]["profileimage"]),
             ),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(snapshot2.data!.docs[index]["name"]),
+                Row(
+                  children: [
+                    Text(snapshot2.data!.docs[index]["rate"].toString()),
+                    const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    )
+                  ],
+                )
+              ],
+            ),
+            subtitle: Text(snapshot2.data!.docs[index]["comment"]),
           );
         },
       );
