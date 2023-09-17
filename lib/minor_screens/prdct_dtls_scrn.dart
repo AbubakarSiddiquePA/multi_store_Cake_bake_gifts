@@ -239,7 +239,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         fontWeight: FontWeight.w600),
                   ),
                   ExpandableTheme(
-                      data: ExpandableThemeData(
+                      data: const ExpandableThemeData(
                         iconColor: Colors.blue,
                         iconSize: 30,
                       ),

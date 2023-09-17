@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../customer_screens/add_address.dart';
 import '../widgets/alert_dialg.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -276,10 +277,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                           const GreyDivider(),
                                           RepeatedListTile(
+                                            onPressed: FirebaseAuth.instance
+                                                    .currentUser!.isAnonymous
+                                                ? null
+                                                : () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              AddAddress(),
+                                                        ));
+                                                  },
                                             title: "Address",
-                                            subTitle: data["address"] == ""
+                                            subTitle: userAdress(data),
+                                            /*data["address"] == ""
                                                 ? "13th street ,hennur cross ,banglore 142"
-                                                : data["address"],
+                                                : data["address"],*/
                                             icon: Icons.location_pin,
                                           ),
                                         ],
@@ -381,6 +394,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
+}
+
+String userAdress(dynamic data) {
+  if (FirebaseAuth.instance.currentUser!.isAnonymous == true) {
+    return "example:48th street , Mumbai, India ";
+  } else if (FirebaseAuth.instance.currentUser!.isAnonymous == false &&
+      data["address"] == "") {
+    return "set your address";
+  }
+  return data["address"];
 }
 
 class GreyDivider extends StatelessWidget {
