@@ -1,5 +1,6 @@
 // import 'package:flutter/material.dart';
 
+import 'package:bake_store/customer_screens/address_book.dart';
 import 'package:bake_store/customer_screens/custmr_orders.dart';
 import 'package:bake_store/customer_screens/wishlist.dart';
 import 'package:bake_store/main_screens/cart.dart';
@@ -285,7 +286,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AddAddress(),
+                                                              AddressBook(),
                                                         ));
                                                   },
                                             title: "Address",

@@ -134,7 +134,7 @@ class _AddAddressState extends State<AddAddress> {
                 ),
                 Center(
                   child: yellowButtonCstm(
-                      label: "Add New Address",
+                      label: "Add",
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           if (countryValue != "Choose Country" &&
