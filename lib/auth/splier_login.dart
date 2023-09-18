@@ -22,40 +22,45 @@ class _CustomerLoginState extends State<SupplierLogin> {
   bool passwordVisibility = false;
 
   void logIn() async {
-    setState(() {
-      processing = true;
-    });
-    if (_formKey.currentState!.validate()) {
-      //validate for image pick
-      try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+      setState(() {
+        processing = true;
+      });
+      if (_formKey.currentState!.validate()) {
+        //validate for image pick
+        try {
+          await FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: email, password: password);
 
-        //just for reseting current values
+          //just for reseting current values
 
-        _formKey.currentState!.reset();
+          _formKey.currentState!.reset();
 
-        Navigator.pushReplacementNamed(context, "/supplier_screen");
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          setState(() {
-            processing = false;
-          });
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, "No user found for that email.");
-        } else if (e.code == 'wrong-password') {
-          setState(() {
-            processing = false;
-          });
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, "Wrong password provided for that user.");
+          Navigator.pushReplacementNamed(context, "/supplier_screen");
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'user-not-found') {
+            setState(() {
+              processing = false;
+            });
+            MyMessageHandler.showSnackBar(
+                _scaffoldKey, "No user found for that email.");
+          } else if (e.code == 'wrong-password') {
+            setState(() {
+              processing = false;
+            });
+            MyMessageHandler.showSnackBar(
+                _scaffoldKey, "Wrong password provided for that user.");
+          }
         }
+      } else {
+        setState(() {
+          processing = false;
+        });
+        MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
       }
     } else {
-      setState(() {
-        processing = false;
-      });
-      MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
+      MyMessageHandler.showSnackBar(
+          _scaffoldKey, "please Check your mail inbox");
     }
   }
 
