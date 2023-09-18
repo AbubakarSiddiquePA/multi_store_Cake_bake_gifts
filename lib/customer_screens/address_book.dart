@@ -18,6 +18,43 @@ class _AddressBookState extends State<AddressBook> {
       .doc(FirebaseAuth.instance.currentUser!.uid)
       .collection("address")
       .snapshots();
+
+  Future dfAddressFalse(dynamic item) async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection("customers")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("address")
+          .doc(item.id);
+      transaction.update(documentReference, {"default": false});
+    });
+  }
+
+  Future dfAddressTrue(dynamic customer) async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection("customers")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection("address")
+          .doc(customer["addressid"]);
+      transaction.update(documentReference, {"default": true});
+    });
+  }
+
+  updateProfile(dynamic customer) async {
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentReference documentReference = FirebaseFirestore.instance
+          .collection("customers")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+
+      transaction.update(documentReference, {
+        "address":
+            "${customer["country"]} - ${customer["state"]} - ${customer["city"]}",
+        "phone": customer["phone"]
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,29 +104,10 @@ class _AddressBookState extends State<AddressBook> {
                   return GestureDetector(
                     onTap: () async {
                       for (var item in snapshot.data!.docs) {
-                        await FirebaseFirestore.instance
-                            .runTransaction((transaction) async {
-                          DocumentReference documentReference =
-                              FirebaseFirestore.instance
-                                  .collection("customers")
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .collection("address")
-                                  .doc(item.id);
-                          transaction
-                              .update(documentReference, {"default": false});
-                        });
+                        await dfAddressFalse(item);
                       }
-                      await FirebaseFirestore.instance
-                          .runTransaction((transaction) async {
-                        DocumentReference documentReference = FirebaseFirestore
-                            .instance
-                            .collection("customers")
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .collection("address")
-                            .doc(customer["addressid"]);
-                        transaction
-                            .update(documentReference, {"default": true});
-                      });
+                      await dfAddressTrue(customer)
+                          .whenComplete(() => updateProfile(customer));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
