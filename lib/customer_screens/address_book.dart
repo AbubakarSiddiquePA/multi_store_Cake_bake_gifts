@@ -4,6 +4,7 @@ import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class AddressBook extends StatefulWidget {
   const AddressBook({super.key});
@@ -41,7 +42,7 @@ class _AddressBookState extends State<AddressBook> {
     });
   }
 
-  updateProfile(dynamic customer) async {
+  Future updateProfile(dynamic customer) async {
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentReference documentReference = FirebaseFirestore.instance
           .collection("customers")
@@ -53,6 +54,15 @@ class _AddressBookState extends State<AddressBook> {
         "phone": customer["phone"]
       });
     });
+  }
+
+  void showProgress() {
+    ProgressDialog progress = ProgressDialog(context: context);
+    progress.show(
+      max: 100,
+      msg: "Updating address please wait....",
+      progressBgColor: Colors.green,
+    );
   }
 
   @override
@@ -101,42 +111,64 @@ class _AddressBookState extends State<AddressBook> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   var customer = snapshot.data!.docs[index];
-                  return GestureDetector(
-                    onTap: () async {
-                      for (var item in snapshot.data!.docs) {
-                        await dfAddressFalse(item);
-                      }
-                      await dfAddressTrue(customer)
-                          .whenComplete(() => updateProfile(customer));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        color: Colors.black12,
-                        child: ListTile(
-                          trailing: customer["default"] == true
-                              ? const Icon(Icons.home_filled)
-                              : const SizedBox(),
-                          title: SizedBox(
-                            height: 50,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "${customer["firstname"]}   ${customer["lastname"]} "),
-                                Text(customer["phone"])
-                              ],
+                  return Dismissible(
+                    key: UniqueKey(),
+                    onDismissed: (direction) async => await FirebaseFirestore
+                        .instance
+                        .runTransaction((transaction) async {
+                      DocumentReference docReference = FirebaseFirestore
+                          .instance
+                          .collection("customers")
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .collection("address")
+                          .doc(customer["addressid"]);
+                      transaction.delete(docReference);
+                    }),
+                    child: GestureDetector(
+                      onTap: () async {
+                        showProgress();
+                        for (var item in snapshot.data!.docs) {
+                          await dfAddressFalse(item);
+                        }
+                        await dfAddressTrue(customer)
+                            .whenComplete(() => updateProfile(customer));
+                        Future.delayed(const Duration(microseconds: 100))
+                            .whenComplete(() => Navigator.pop(context));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          color: customer["default"] == true
+                              ? Colors.black26
+                              : Colors.white,
+                          child: ListTile(
+                            trailing: customer["default"] == true
+                                ? const Icon(
+                                    Icons.home_filled,
+                                    color: Colors.black,
+                                  )
+                                : const SizedBox(),
+                            title: SizedBox(
+                              height: 50,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "${customer["firstname"]}   ${customer["lastname"]} "),
+                                  Text(customer["phone"])
+                                ],
+                              ),
                             ),
-                          ),
-                          subtitle: SizedBox(
-                            height: 50,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    "City/State: ${customer["city"]} ${customer["state"]} "),
-                                Text("Country : ${customer["country"]}")
-                              ],
+                            subtitle: SizedBox(
+                              height: 50,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      "City/State: ${customer["city"]} ${customer["state"]} "),
+                                  Text("Country : ${customer["country"]}")
+                                ],
+                              ),
                             ),
                           ),
                         ),
