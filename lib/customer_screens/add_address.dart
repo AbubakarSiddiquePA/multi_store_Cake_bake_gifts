@@ -154,7 +154,8 @@ class _AddAddressState extends State<AddAddress> {
                               "phone": phone,
                               "country": countryValue,
                               "state": stateValue,
-                              "city": cityValue
+                              "city": cityValue,
+                              "default": true,
                             }).whenComplete(() => Navigator.pop(context));
                           } else {
                             MyMessageHandler.showSnackBar(

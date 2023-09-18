@@ -64,31 +64,62 @@ class _AddressBookState extends State<AddressBook> {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
                   var customer = snapshot.data!.docs[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      color: Colors.black12,
-                      child: ListTile(
-                        title: SizedBox(
-                          height: 50,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  "${customer["firstname"]}   ${customer["lastname"]} "),
-                              Text(customer["phone"])
-                            ],
+                  return GestureDetector(
+                    onTap: () async {
+                      for (var item in snapshot.data!.docs) {
+                        await FirebaseFirestore.instance
+                            .runTransaction((transaction) async {
+                          DocumentReference documentReference =
+                              FirebaseFirestore.instance
+                                  .collection("customers")
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .collection("address")
+                                  .doc(item.id);
+                          transaction
+                              .update(documentReference, {"default": false});
+                        });
+                      }
+                      await FirebaseFirestore.instance
+                          .runTransaction((transaction) async {
+                        DocumentReference documentReference = FirebaseFirestore
+                            .instance
+                            .collection("customers")
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .collection("address")
+                            .doc(customer["addressid"]);
+                        transaction
+                            .update(documentReference, {"default": true});
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        color: Colors.black12,
+                        child: ListTile(
+                          trailing: customer["default"] == true
+                              ? const Icon(Icons.home_filled)
+                              : SizedBox(),
+                          title: SizedBox(
+                            height: 50,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "${customer["firstname"]}   ${customer["lastname"]} "),
+                                Text(customer["phone"])
+                              ],
+                            ),
                           ),
-                        ),
-                        subtitle: SizedBox(
-                          height: 50,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  "City/State: ${customer["city"]} ${customer["state"]} "),
-                              Text("Country : ${customer["country"]}")
-                            ],
+                          subtitle: SizedBox(
+                            height: 50,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    "City/State: ${customer["city"]} ${customer["state"]} "),
+                                Text("Country : ${customer["country"]}")
+                              ],
+                            ),
                           ),
                         ),
                       ),
