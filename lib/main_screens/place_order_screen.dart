@@ -17,34 +17,45 @@ class PlaceOrderScreen extends StatefulWidget {
 class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
   CollectionReference customers =
       FirebaseFirestore.instance.collection('customers');
+  final Stream<QuerySnapshot> addressStream = FirebaseFirestore.instance
+      .collection("customers")
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .collection("address")
+      .where("default", isEqualTo: true)
+      .limit(1)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
     double totalPrice = context.watch<Cart>().totalPrice;
-    return FutureBuilder<DocumentSnapshot>(
-      future: customers.doc(FirebaseAuth.instance.currentUser!.uid).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
-        }
+    return StreamBuilder<QuerySnapshot>(
+        stream: addressStream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text('Something went wrong');
+          }
 
-        if (snapshot.hasData && !snapshot.data!.exists) {
-          return const Text("Document does not exist");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Material(
-            child: Center(
-              child: CircularProgressIndicator(
-                color: Colors.green,
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Material(
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
-            ),
-          );
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-
+            );
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "this category has no items yet",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: "Acme",
+                    letterSpacing: 1.5,
+                    fontSize: 24,
+                    color: Colors.blueGrey,
+                    fontWeight: FontWeight.bold),
+              ),
+            );
+          }
           return Material(
             color: Colors.grey.shade200,
             child: SafeArea(
@@ -62,22 +73,45 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 90,
+                        height: 120,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15)),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4, horizontal: 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text("Name: ${data["name"]}"),
-                              Text("Phone: ${data["phone"]}"),
-                              Text("Adress: ${data["address"]}"),
-                            ],
-                          ),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                          child: ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                var customer = snapshot.data!.docs[index];
+
+                                return ListTile(
+                                  title: SizedBox(
+                                    height: 50,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "${customer["firstname"]}   ${customer["lastname"]} "),
+                                        Text(customer["phone"])
+                                      ],
+                                    ),
+                                  ),
+                                  subtitle: SizedBox(
+                                    height: 50,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                            "City/State: ${customer["city"]} ${customer["state"]} "),
+                                        Text("Country : ${customer["country"]}")
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
                       ),
                       const SizedBox(
@@ -203,9 +237,6 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
               ),
             ),
           );
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+        });
   }
 }

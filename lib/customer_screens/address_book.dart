@@ -98,7 +98,7 @@ class _AddressBookState extends State<AddressBook> {
                         child: ListTile(
                           trailing: customer["default"] == true
                               ? const Icon(Icons.home_filled)
-                              : SizedBox(),
+                              : const SizedBox(),
                           title: SizedBox(
                             height: 50,
                             child: Column(

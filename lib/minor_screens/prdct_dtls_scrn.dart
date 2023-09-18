@@ -228,7 +228,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   const ProductDetailsHeader(
-                    label: "Item Descriptionn",
+                    label: "Item Description",
                   ),
                   Text(
                     textScaleFactor: 1.2,
