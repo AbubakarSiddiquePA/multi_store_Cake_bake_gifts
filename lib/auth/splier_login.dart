@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 import 'package:bake_store/widgets/auth_widgets.dart';
+import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../widgets/snackbar.dart';
@@ -20,47 +21,55 @@ class _CustomerLoginState extends State<SupplierLogin> {
       GlobalKey<ScaffoldMessengerState>();
 
   bool passwordVisibility = false;
+  bool sendEmailVerification = false;
 
   void logIn() async {
-    if (FirebaseAuth.instance.currentUser!.emailVerified) {
-      setState(() {
-        processing = true;
-      });
-      if (_formKey.currentState!.validate()) {
-        //validate for image pick
-        try {
-          await FirebaseAuth.instance
-              .signInWithEmailAndPassword(email: email, password: password);
+    setState(() {
+      processing = true;
+    });
+    if (_formKey.currentState!.validate()) {
+      //validate for image pick
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
 
+        await FirebaseAuth.instance.currentUser!.reload();
+        if (FirebaseAuth.instance.currentUser!.emailVerified) {
           //just for reseting current values
 
           _formKey.currentState!.reset();
-
-          Navigator.pushReplacementNamed(context, "/supplier_screen");
-        } on FirebaseAuthException catch (e) {
-          if (e.code == 'user-not-found') {
-            setState(() {
-              processing = false;
-            });
-            MyMessageHandler.showSnackBar(
-                _scaffoldKey, "No user found for that email.");
-          } else if (e.code == 'wrong-password') {
-            setState(() {
-              processing = false;
-            });
-            MyMessageHandler.showSnackBar(
-                _scaffoldKey, "Wrong password provided for that user.");
-          }
+          await Future.delayed(const Duration(milliseconds: 100))
+              .whenComplete(() {
+            Navigator.pushReplacementNamed(context, "/supplier_screen");
+          });
+        } else {
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, "please Check your mail inbox");
+          setState(() {
+            processing = false;
+            sendEmailVerification = true;
+          });
         }
-      } else {
-        setState(() {
-          processing = false;
-        });
-        MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          setState(() {
+            processing = false;
+          });
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, "No user found for that email.");
+        } else if (e.code == 'wrong-password') {
+          setState(() {
+            processing = false;
+          });
+          MyMessageHandler.showSnackBar(
+              _scaffoldKey, "Wrong password provided for that user.");
+        }
       }
     } else {
-      MyMessageHandler.showSnackBar(
-          _scaffoldKey, "please Check your mail inbox");
+      setState(() {
+        processing = false;
+      });
+      MyMessageHandler.showSnackBar(_scaffoldKey, "please fill all fields");
     }
   }
 
@@ -82,7 +91,35 @@ class _CustomerLoginState extends State<SupplierLogin> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const AuthHeaderLabel(headerLabel: "Log In Supplier"),
-                      const SizedBox(height: 50),
+                      SizedBox(
+                          height: 50,
+                          child: sendEmailVerification == true
+                              ? Center(
+                                  child: yellowButtonCstm(
+                                      label: "Resend verification,",
+                                      onPressed: () async {
+                                        try {
+                                          await FirebaseAuth
+                                              .instance.currentUser!
+                                              .sendEmailVerification();
+                                          MyMessageHandler.showSnackBar(
+                                              _scaffoldKey,
+                                              "verification Sent please check your mail");
+                                        } catch (e) {
+                                          print(e);
+                                        }
+
+                                        Future.delayed(Duration(seconds: 3))
+                                            .whenComplete(() {
+                                          setState(() {
+                                            sendEmailVerification = false;
+                                          });
+                                        });
+                                      },
+                                      width: 0.4,
+                                      colore: Colors.blue),
+                                )
+                              : SizedBox()),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(

@@ -146,202 +146,204 @@ class _EditStoreState extends State<EditStore> {
           title: const AppBarTitle(title: "Edit Store"),
           leading: const AppBarBackButton(),
         ),
-        body: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    "Store Logo",
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.grey.shade900,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage:
-                            NetworkImage(widget.data["storeLogo"].toString()),
-                      ),
-                      Column(
-                        children: [
-                          yellowButtonCstm(
-                              label: "change",
-                              onPressed: () {
-                                pickStoreLogo();
-                              },
-                              width: 0.25,
-                              colore: Colors.yellow),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          imageFileLogo == null
-                              ? const SizedBox()
-                              : yellowButtonCstm(
-                                  label: "Reset",
-                                  onPressed: () {
-                                    setState(() {
-                                      //clear picked image
-                                      imageFileLogo = null;
-                                    });
-                                  },
-                                  width: 0.25,
-                                  colore: Colors.yellow),
-                        ],
-                      ),
-                      imageFileLogo == null
-                          ? const SizedBox()
-                          : CircleAvatar(
-                              radius: 60,
-                              backgroundImage: FileImage(
-                                File(imageFileLogo!.path),
-                              ),
-                            ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Divider(
-                      color: Colors.yellow,
-                      thickness: 2.5,
-                    ),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text(
-                    "Cover Image",
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.grey.shade900,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage:
-                            NetworkImage(widget.data["coverimage"].toString()),
-                      ),
-                      Column(
-                        children: [
-                          yellowButtonCstm(
-                              label: "change",
-                              onPressed: () {
-                                pickCoverImage();
-                              },
-                              width: 0.25,
-                              colore: Colors.yellow),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          imageFileCover == null
-                              ? const SizedBox()
-                              : yellowButtonCstm(
-                                  label: "Reset",
-                                  onPressed: () {
-                                    setState(() {
-                                      //clear picked image
-                                      imageFileCover = null;
-                                    });
-                                  },
-                                  width: 0.25,
-                                  colore: Colors.yellow),
-                        ],
-                      ),
-                      imageFileCover == null
-                          ? const SizedBox()
-                          : CircleAvatar(
-                              radius: 60,
-                              backgroundImage: FileImage(
-                                File(imageFileCover!.path),
-                              ),
-                            ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Divider(
-                      color: Colors.yellow,
-                      thickness: 2.5,
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your store name";
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    storeName = value!;
-                  },
-                  initialValue: widget.data["storeName"],
-                  decoration: textFormDecoration.copyWith(
-                      labelText: "Store name", hintText: "Enter store name"),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please enter your phone no.";
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    phone = value!;
-                  },
-                  initialValue: widget.data["phone"],
-                  decoration: textFormDecoration.copyWith(
-                      labelText: "Phone", hintText: "Enter phone no."),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Column(
                   children: [
-                    yellowButtonCstm(
-                        label: "Cancel",
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        width: 0.25,
-                        colore: Colors.blue),
-                    processing == true
-                        ? yellowButtonCstm(
-                            label: "please wait ",
-                            onPressed: () {
-                              null;
-                            },
-                            width: 0.5,
-                            colore: Colors.green)
-                        : yellowButtonCstm(
-                            label: "Save Changes",
-                            onPressed: () {
-                              saveChanges();
-                            },
-                            width: 0.5,
-                            colore: Colors.green)
+                    Text(
+                      "Store Logo",
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.grey.shade900,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundImage:
+                              NetworkImage(widget.data["storeLogo"].toString()),
+                        ),
+                        Column(
+                          children: [
+                            yellowButtonCstm(
+                                label: "change",
+                                onPressed: () {
+                                  pickStoreLogo();
+                                },
+                                width: 0.25,
+                                colore: Colors.yellow),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            imageFileLogo == null
+                                ? const SizedBox()
+                                : yellowButtonCstm(
+                                    label: "Reset",
+                                    onPressed: () {
+                                      setState(() {
+                                        //clear picked image
+                                        imageFileLogo = null;
+                                      });
+                                    },
+                                    width: 0.25,
+                                    colore: Colors.yellow),
+                          ],
+                        ),
+                        imageFileLogo == null
+                            ? const SizedBox()
+                            : CircleAvatar(
+                                radius: 60,
+                                backgroundImage: FileImage(
+                                  File(imageFileLogo!.path),
+                                ),
+                              ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Divider(
+                        color: Colors.yellow,
+                        thickness: 2.5,
+                      ),
+                    )
                   ],
                 ),
-              )
-            ],
+                Column(
+                  children: [
+                    Text(
+                      "Cover Image",
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.grey.shade900,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(
+                              widget.data["coverimage"].toString()),
+                        ),
+                        Column(
+                          children: [
+                            yellowButtonCstm(
+                                label: "change",
+                                onPressed: () {
+                                  pickCoverImage();
+                                },
+                                width: 0.25,
+                                colore: Colors.yellow),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            imageFileCover == null
+                                ? const SizedBox()
+                                : yellowButtonCstm(
+                                    label: "Reset",
+                                    onPressed: () {
+                                      setState(() {
+                                        //clear picked image
+                                        imageFileCover = null;
+                                      });
+                                    },
+                                    width: 0.25,
+                                    colore: Colors.yellow),
+                          ],
+                        ),
+                        imageFileCover == null
+                            ? const SizedBox()
+                            : CircleAvatar(
+                                radius: 60,
+                                backgroundImage: FileImage(
+                                  File(imageFileCover!.path),
+                                ),
+                              ),
+                      ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Divider(
+                        color: Colors.yellow,
+                        thickness: 2.5,
+                      ),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your store name";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      storeName = value!;
+                    },
+                    initialValue: widget.data["storeName"],
+                    decoration: textFormDecoration.copyWith(
+                        labelText: "Store name", hintText: "Enter store name"),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please enter your phone no.";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      phone = value!;
+                    },
+                    initialValue: widget.data["phone"],
+                    decoration: textFormDecoration.copyWith(
+                        labelText: "Phone", hintText: "Enter phone no."),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      yellowButtonCstm(
+                          label: "Cancel",
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          width: 0.25,
+                          colore: Colors.blue),
+                      processing == true
+                          ? yellowButtonCstm(
+                              label: "please wait ",
+                              onPressed: () {
+                                null;
+                              },
+                              width: 0.5,
+                              colore: Colors.green)
+                          : yellowButtonCstm(
+                              label: "Save Changes",
+                              onPressed: () {
+                                saveChanges();
+                              },
+                              width: 0.5,
+                              colore: Colors.green)
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

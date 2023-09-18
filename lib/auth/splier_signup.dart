@@ -88,7 +88,11 @@ class _CustomerRegisterState extends State<SupplierRegister> {
           // print(password);
           await FirebaseAuth.instance
               .createUserWithEmailAndPassword(email: email, password: password);
-
+          try {
+            await FirebaseAuth.instance.currentUser!.sendEmailVerification();
+          } catch (e) {
+            print(e);
+          }
           //upload image to firestore uniquely by email
 
           firebase_storage.Reference ref = firebase_storage
@@ -100,6 +104,9 @@ class _CustomerRegisterState extends State<SupplierRegister> {
           _uid = FirebaseAuth.instance.currentUser!.uid;
           //get url for image
           storeLogo = await ref.getDownloadURL();
+
+          await FirebaseAuth.instance.currentUser!.updateDisplayName(storeName);
+          await FirebaseAuth.instance.currentUser!.updatePhotoURL(storeLogo);
           //set documnt for our map of data
           await suppliers.doc(_uid).set({
             "storeName": storeName,
