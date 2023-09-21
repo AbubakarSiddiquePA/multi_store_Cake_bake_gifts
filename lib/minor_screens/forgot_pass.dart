@@ -1,7 +1,6 @@
 import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatefulWidget {
