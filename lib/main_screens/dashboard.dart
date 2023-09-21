@@ -4,6 +4,7 @@ import 'package:bake_store/dashboard_components/manage_products.dart';
 import 'package:bake_store/dashboard_components/splier_ordrs.dart';
 import 'package:bake_store/dashboard_components/suplier_statcs.dart';
 import 'package:bake_store/minor_screens/visit_store.dart';
+import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -59,12 +60,15 @@ class DashboardScreen extends StatelessWidget {
                   },
                   tabYes: () async {
                     // Perform the log out operation
-                    await FirebaseAuth.instance.signOut();
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                    // ignore: use_build_context_synchronously
-                    Navigator.pushReplacementNamed(context, "/welcome_screen");
+                    await AuthRepo.logOut();
+                    await Future.delayed(const Duration(microseconds: 100))
+                        .whenComplete(() {
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(
+                          context, "/welcome_screen");
+                    });
                   });
+
               // Navigator.pushReplacementNamed(context, "/welcome_screen");
             },
             icon: const Icon(Icons.logout),

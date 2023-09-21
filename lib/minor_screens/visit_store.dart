@@ -95,8 +95,9 @@ class _VisitStoreState extends State<VisitStore> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 data["storeName"].toString().toUpperCase(),
+                                // FirebaseAuth.instance.currentUser!.displayName!,
                                 style: const TextStyle(
-                                    fontSize: 20, color: Colors.yellow),
+                                    fontSize: 20, color: Colors.white),
                               ),
                             ),
                           ],
@@ -112,6 +113,8 @@ class _VisitStoreState extends State<VisitStore> {
                                         width: 3, color: Colors.black)),
                                 child: MaterialButton(
                                     onPressed: () {
+                                      // FirebaseAuth.instance.currentUser!
+                                      //     .delete();
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(

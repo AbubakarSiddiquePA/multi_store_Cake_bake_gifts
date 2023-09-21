@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/auth_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -80,19 +81,9 @@ class _CustomerRegisterState extends State<SupplierRegister> {
       //validate for image pick
       if (_imageFile != null) {
         try {
-          // print("image picked");
-          // print("Valid");
+          await AuthRepo.signUpWithEmailAndPassword(email, password);
 
-          // print(name);
-          // print(email);
-          // print(password);
-          await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(email: email, password: password);
-          try {
-            await FirebaseAuth.instance.currentUser!.sendEmailVerification();
-          } catch (e) {
-            print(e);
-          }
+          AuthRepo.sendEmailVerification();
           //upload image to firestore uniquely by email
 
           firebase_storage.Reference ref = firebase_storage
@@ -101,12 +92,12 @@ class _CustomerRegisterState extends State<SupplierRegister> {
 
           //uploading file
           await ref.putFile(File(_imageFile!.path));
-          _uid = FirebaseAuth.instance.currentUser!.uid;
+          _uid = AuthRepo.uid;
           //get url for image
           storeLogo = await ref.getDownloadURL();
+          AuthRepo.updateUserName(storeName);
+          AuthRepo.updateUserName(storeLogo);
 
-          await FirebaseAuth.instance.currentUser!.updateDisplayName(storeName);
-          await FirebaseAuth.instance.currentUser!.updatePhotoURL(storeLogo);
           //set documnt for our map of data
           await suppliers.doc(_uid).set({
             "storeName": storeName,
@@ -122,21 +113,32 @@ class _CustomerRegisterState extends State<SupplierRegister> {
           setState(() {
             _imageFile = null;
           });
-          Navigator.pushReplacementNamed(context, "/supplier_login");
+          await Future.delayed(const Duration(milliseconds: 100))
+              .whenComplete(() {
+            Navigator.pushReplacementNamed(context, "/supplier_login");
+          });
         } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            setState(() {
-              processing = false;
-            });
-            MyMessageHandler.showSnackBar(
-                _scaffoldKey, "The password provided is too weak.");
-          } else if (e.code == 'email-already-in-use') {
-            setState(() {
-              processing = false;
-            });
-            MyMessageHandler.showSnackBar(
-                _scaffoldKey, "The account already exists for that email.");
-          }
+          setState(() {
+            processing = false;
+          });
+          MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
+
+          // setState(() {
+          //   processing = false;
+          // });
+          // if (e.code == 'weak-password') {
+          //   setState(() {
+          //     processing = false;
+          //   });
+          //   MyMessageHandler.showSnackBar(
+          //       _scaffoldKey, "The password provided is too weak.");
+          // } else if (e.code == 'email-already-in-use') {
+          //   setState(() {
+          //     processing = false;
+          //   });
+          //   MyMessageHandler.showSnackBar(
+          //       _scaffoldKey, "The account already exists for that email.");
+          // }
         }
       } else {
         setState(() {

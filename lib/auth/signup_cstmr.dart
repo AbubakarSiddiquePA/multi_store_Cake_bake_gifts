@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../providers/auth_repo.dart';
 import '../widgets/snackbar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -80,14 +81,9 @@ class _CustomerRegisterState extends State<CustomerRegister> {
       //validate for image pick
       if (_imageFile != null) {
         try {
-          // print("image picked");
-          // print("Valid");
+          await AuthRepo.signUpWithEmailAndPassword(email, password);
 
-          // print(name);
-          // print(email);
-          // print(password);
-          await FirebaseAuth.instance
-              .createUserWithEmailAndPassword(email: email, password: password);
+          AuthRepo.sendEmailVerification();
 
           //upload image to firestore uniquely by email
 
@@ -97,9 +93,12 @@ class _CustomerRegisterState extends State<CustomerRegister> {
 
           //uploading file
           await ref.putFile(File(_imageFile!.path));
-          _uid = FirebaseAuth.instance.currentUser!.uid;
+          _uid = AuthRepo.uid;
           //get url for image
           profileImage = await ref.getDownloadURL();
+
+          AuthRepo.updateUserName(name);
+          AuthRepo.updateUserName(profileImage);
           //set documnt for our map of data
           await customers.doc(_uid).set({
             "name": name,
@@ -118,19 +117,24 @@ class _CustomerRegisterState extends State<CustomerRegister> {
           await Future.delayed(const Duration(microseconds: 100)).whenComplete(
               () => Navigator.pushReplacementNamed(context, "/customer_login"));
         } on FirebaseAuthException catch (e) {
-          if (e.code == 'weak-password') {
-            setState(() {
-              processing = false;
-            });
-            MyMessageHandler.showSnackBar(
-                _scaffoldKey, "The password provided is too weak.");
-          } else if (e.code == 'email-already-in-use') {
-            setState(() {
-              processing = false;
-            });
-            MyMessageHandler.showSnackBar(
-                _scaffoldKey, "The account already exists for that email.");
-          }
+          setState(() {
+            processing = false;
+          });
+          MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
+
+          // if (e.code == 'weak-password') {
+          //   setState(() {
+          //     processing = false;
+          //   });
+          //   MyMessageHandler.showSnackBar(
+          //       _scaffoldKey, "The password provided is too weak.");
+          // } else if (e.code == 'email-already-in-use') {
+          //   setState(() {
+          //     processing = false;
+          //   });
+          //   MyMessageHandler.showSnackBar(
+          //       _scaffoldKey, "The account already exists for that email.");
+          // }
         }
       } else {
         setState(() {

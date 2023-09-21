@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/auth_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,11 +31,11 @@ class _CustomerLoginState extends State<SupplierLogin> {
     if (_formKey.currentState!.validate()) {
       //validate for image pick
       try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
+        await AuthRepo.signInWithEmailAndPassword(email, password);
 
-        await FirebaseAuth.instance.currentUser!.reload();
-        if (FirebaseAuth.instance.currentUser!.emailVerified) {
+        await AuthRepo.reloadUserData();
+
+        if (await AuthRepo.checkEmailVerification()) {
           //just for reseting current values
 
           _formKey.currentState!.reset();
@@ -51,19 +52,23 @@ class _CustomerLoginState extends State<SupplierLogin> {
           });
         }
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          setState(() {
-            processing = false;
-          });
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, "No user found for that email.");
-        } else if (e.code == 'wrong-password') {
-          setState(() {
-            processing = false;
-          });
-          MyMessageHandler.showSnackBar(
-              _scaffoldKey, "Wrong password provided for that user.");
-        }
+        setState(() {
+          processing = false;
+        });
+        MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
+        // if (e.code == 'user-not-found') {
+        //   setState(() {
+        //     processing = false;
+        //   });
+        //   MyMessageHandler.showSnackBar(
+        //       _scaffoldKey, "No user found for that email.");
+        // } else if (e.code == 'wrong-password') {
+        //   setState(() {
+        //     processing = false;
+        //   });
+        //   MyMessageHandler.showSnackBar(
+        //       _scaffoldKey, "Wrong password provided for that user.");
+        // }
       }
     } else {
       setState(() {

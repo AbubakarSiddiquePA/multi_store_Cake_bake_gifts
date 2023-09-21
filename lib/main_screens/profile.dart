@@ -4,6 +4,7 @@ import 'package:bake_store/customer_screens/address_book.dart';
 import 'package:bake_store/customer_screens/custmr_orders.dart';
 import 'package:bake_store/customer_screens/wishlist.dart';
 import 'package:bake_store/main_screens/cart.dart';
+import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -286,7 +287,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
-                                                              AddressBook(),
+                                                              const AddressBook(),
                                                         ));
                                                   },
                                             title: "Address",
@@ -339,8 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   },
                                                   tabYes: () async {
                                                     // Perform the log out operation
-                                                    await FirebaseAuth.instance
-                                                        .signOut();
+                                                    await AuthRepo.logOut();
                                                     await Future.delayed(
                                                             const Duration(
                                                                 microseconds:
