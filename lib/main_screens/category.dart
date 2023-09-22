@@ -75,13 +75,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
               _pageController.animateToPage(index,
                   duration: const Duration(milliseconds: 400),
                   curve: Curves.bounceInOut);
-
-              // for (var element in items) {
-              //   element.isSelected = false;
-              // }
-              // setState(() {
-              //   items[index].isSelected = true;
-              // });
             },
             child: Container(
               color:

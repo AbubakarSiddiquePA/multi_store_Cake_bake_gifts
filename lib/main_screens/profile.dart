@@ -10,7 +10,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../customer_screens/add_address.dart';
 import '../minor_screens/updt_pass.dart';
 import '../widgets/alert_dialg.dart';
 
