@@ -80,4 +80,14 @@ class AuthRepo {
       return false;
     }
   }
+
+  static Future<void> updateUserPassword(newPassword) async {
+    User user = FirebaseAuth.instance.currentUser!;
+
+    try {
+      await user.updatePassword(newPassword);
+    } catch (e) {
+      print(e);
+    }
+  }
 }
