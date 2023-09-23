@@ -1,6 +1,7 @@
 // import 'package:bake_store/main_screens/payment_screen.dart';
 import 'package:bake_store/customer_screens/add_address.dart';
 import 'package:bake_store/customer_screens/address_book.dart';
+import 'package:bake_store/main_screens/payment_screen.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
@@ -269,22 +270,21 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                     child: yellowButtonCstm(
                         label: "Confirm ${totalPrice.toStringAsFixed(2)} Rs",
                         onPressed: () {
-                          //do following code once payment screen is done
-                          //  onPressed: snapshot.data!.docs.isEmpty
-                          //   ? () {
-                          //       Navigator.push(
-                          //           context,
-                          //           MaterialPageRoute(
-                          //             builder: (context) => const AddAddress(),
-                          //           ));
-                          //     }
-                          //   : () {
-                          //       Navigator.push(
-                          //           context,
-                          //           MaterialPageRoute(
-                          //             builder: (context) => const PaymentScreen(),
-                          //           ));
-                          //     },
+                          if (snapshot.data!.docs.isEmpty) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AddAddress(),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const PaymentScreen(),
+                              ),
+                            );
+                          }
                         },
                         width: 1,
                         colore: Colors.green),
