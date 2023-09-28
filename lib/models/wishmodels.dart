@@ -77,13 +77,13 @@ class WishlistModel extends StatelessWidget {
                                   : IconButton(
                                       onPressed: () {
                                         context.read<Cart>().addItem(
-                                            product.name,
-                                            product.price,
-                                            1,
-                                            product.qntty,
-                                            product.imagesUrl,
-                                            product.documentId,
-                                            product.suppId);
+                                            name: product.name,
+                                            price: product.price,
+                                            qty: 1,
+                                            qntty: product.qntty,
+                                            imagesUrl: product.imagesUrl,
+                                            documentId: product.documentId,
+                                            suppId: product.suppId);
                                       },
                                       icon: const Icon(Icons.add_shopping_cart),
                                     ),

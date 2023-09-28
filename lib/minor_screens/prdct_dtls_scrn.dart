@@ -357,17 +357,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               _scaffoldKey, "this item is already in cart");
                         } else {
                           context.read<Cart>().addItem(
-                                widget.proList["proname"],
-                                onSale != 0
-                                    ? ((1 - (onSale / 100)) *
-                                        widget.proList["price"])
-                                    : widget.proList["price"],
-                                1,
-                                widget.proList["instock"],
-                                widget.proList["proimages"],
-                                widget.proList["proid"],
-                                widget.proList["sid"],
-                              );
+                              name: widget.proList["proname"],
+                              price: onSale != 0
+                                  ? ((1 - (onSale / 100)) *
+                                      widget.proList["price"])
+                                  : widget.proList["price"],
+                              qty: 1,
+                              qntty: widget.proList["instock"],
+                              imagesUrl: widget.proList["proimages"],
+                              documentId: widget.proList["proid"],
+                              suppId: widget.proList["sid"]);
                         }
                       },
                       width: 0.55,
