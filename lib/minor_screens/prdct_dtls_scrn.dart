@@ -230,13 +230,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const ProductDetailsHeader(
                     label: "Item Description",
                   ),
-                  Text(
-                    textScaleFactor: 1.2,
-                    widget.proList['prodesc'].toString(),
-                    style: TextStyle(
-                        color: Colors.blueGrey.shade800,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      textScaleFactor: 1.2,
+                      widget.proList['prodesc'].toString(),
+                      style: TextStyle(
+                          color: Colors.blueGrey.shade800,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
                   ExpandableTheme(
                       data: const ExpandableThemeData(

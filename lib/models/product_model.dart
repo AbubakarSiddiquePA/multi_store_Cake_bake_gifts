@@ -68,7 +68,7 @@ class _ProductModelState extends State<ProductModel> {
                               fontWeight: FontWeight.bold),
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Row(
                               children: [
@@ -104,7 +104,7 @@ class _ProductModelState extends State<ProductModel> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       )
-                                    : const Text("data")
+                                    : const SizedBox()
                               ],
                             ),
                             widget.products["sid"] ==
