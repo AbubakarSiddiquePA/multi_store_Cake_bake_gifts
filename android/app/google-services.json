@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1071362759583:android:5dc7712308d85034dbbbaa",
         "android_client_info": {
-          "package_name": "com.example.bake_store"
+          "package_name": "in.siddi.bake_store"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "1071362759583-84toa6gup7j8tg05rtj3f71oa5ua066t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bake_store",
+            "package_name": "in.siddi.bake_store",
             "certificate_hash": "dc46815c9d1d79b8e3b9ee4fc85f2ad143e3d3ee"
           }
         },
