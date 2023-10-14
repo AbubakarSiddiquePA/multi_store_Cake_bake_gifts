@@ -179,56 +179,56 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   decoration: const BoxDecoration(
                     color: Colors.transparent,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GoogleFacebookLogin(
-                        label: "Google",
-                        child: const Image(
-                            image: AssetImage("images/logo/google_logo.png")),
-                        onPressed: () {},
-                      ),
-                      GoogleFacebookLogin(
-                        label: "Facebook",
-                        child: const Image(
-                            image: AssetImage("images/logo/fb_logo.png")),
-                        onPressed: () {},
-                      ),
-                      processing == true
-                          ? const CircularProgressIndicator()
-                          : GoogleFacebookLogin(
-                              label: "Guest",
-                              child: const Icon(
-                                Icons.person,
-                                size: 28,
-                                color: Colors.blueAccent,
-                              ),
-                              onPressed: () async {
-                                setState(() {
-                                  processing = true;
-                                });
-                                await FirebaseAuth.instance
-                                    .signInAnonymously()
-                                    .whenComplete(() async {
-                                  _uid = FirebaseAuth.instance.currentUser!.uid;
+                  // child: Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     // GoogleFacebookLogin(
+                  //     //   label: "Google",
+                  //     //   child: const Image(
+                  //     //       image: AssetImage("images/logo/google_logo.png")),
+                  //     //   onPressed: () {},
+                  //     // ),
+                  //     // GoogleFacebookLogin(
+                  //     //   label: "Facebook",
+                  //     //   child: const Image(
+                  //     //       image: AssetImage("images/logo/fb_logo.png")),
+                  //     //   onPressed: () {},
+                  //     // ),
+                  //     processing == true
+                  //         ? const CircularProgressIndicator()
+                  //         : GoogleFacebookLogin(
+                  //             label: "Guest",
+                  //             child: const Icon(
+                  //               Icons.person,
+                  //               size: 28,
+                  //               color: Colors.blueAccent,
+                  //             ),
+                  //             onPressed: () async {
+                  //               setState(() {
+                  //                 processing = true;
+                  //               });
+                  //               await FirebaseAuth.instance
+                  //                   .signInAnonymously()
+                  //                   .whenComplete(() async {
+                  //                 _uid = FirebaseAuth.instance.currentUser!.uid;
 
-                                  await anonymous.doc(_uid).set({
-                                    "name": "",
-                                    "email": "",
-                                    "profileimage": "",
-                                    "phone": "",
-                                    "address": "",
-                                    "cid": _uid
-                                  });
-                                });
+                  //                 await anonymous.doc(_uid).set({
+                  //                   "name": "",
+                  //                   "email": "",
+                  //                   "profileimage": "",
+                  //                   "phone": "",
+                  //                   "address": "",
+                  //                   "cid": _uid
+                  //                 });
+                  //               });
 
-                                // ignore: use_build_context_synchronously
-                                Navigator.pushReplacementNamed(
-                                    context, "/customer_screen");
-                              },
-                            ),
-                    ],
-                  ),
+                  //               // ignore: use_build_context_synchronously
+                  //               Navigator.pushReplacementNamed(
+                  //                   context, "/customer_screen");
+                  //             },
+                  //           ),
+                  //   ],
+                  // ),
                 )
               ],
             ),
