@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import '../providers/cart_providers.dart';
 import '../providers/product_class.dart';
 import '../providers/wish_provider.dart';
+import '../widgets/alert_dialg.dart';
 
 class WishlistModel extends StatelessWidget {
   const WishlistModel({
@@ -60,7 +61,19 @@ class WishlistModel extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
-                                  context.read<Wish>().removeItem(product);
+                                  MyAlertDialog.showMyDialogue(
+                                    context: context,
+                                    title: "Delete Item ",
+                                    content: "Delete this Item from Wishlist",
+                                    tabNo: () {
+                                      Navigator.pop(context);
+                                    },
+                                    tabYes: () {
+                                      context.read<Wish>().removeItem(product);
+
+                                      Navigator.pop(context);
+                                    },
+                                  );
                                 },
                                 icon: const Icon(Icons.delete_forever),
                               ),

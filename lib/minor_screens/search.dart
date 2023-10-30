@@ -79,6 +79,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       element["proname".toLowerCase()]
                           .contains(searchInput.toLowerCase()));
 
+                  if (result.isEmpty) {
+                    return Center(
+                      child: Text("No Results Found!"),
+                    );
+                  }
+
                   return ListView(
                       children: result.map((e) => SearchModel(e: e)).toList());
                 }));
@@ -133,22 +139,28 @@ class SearchModel extends StatelessWidget {
                     child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      e["proname"],
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        e["proname"],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
                     ),
-                    Text(
-                      e["prodesc"],
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        e["prodesc"],
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ],

@@ -306,20 +306,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Container(
-                                      height: 260,
+                                      height: 170,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(25),
                                       ),
                                       child: Column(
                                         children: [
-                                          RepeatedListTile(
-                                            title: "Edit Profile",
-                                            subTitle: "",
-                                            icon: Icons.edit,
-                                            onPressed: () {},
-                                          ),
-                                          const GreyDivider(),
+                                          // RepeatedListTile(
+                                          //   title: "Edit Profile",
+                                          //   subTitle: "",
+                                          //   icon: Icons.edit,
+                                          //   onPressed: () {},
+                                          // ),
+                                          // const GreyDivider(),
                                           RepeatedListTile(
                                             title: "Change Password",
                                             subTitle: " ",
@@ -376,13 +376,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SliverFillRemaining(
                         hasScrollBody: false,
                         child: Container(
-                          height: 1000, // Replace with the desired height
+                          height: 50, // Replace with the desired height
                           color: Colors.white,
                           child: const Center(
                             child: Text(
-                              'Additional Content',
+                              'Version 1.0.01',
                               style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.bold),
+                                  color: Colors.grey,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                         ),
