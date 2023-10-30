@@ -45,20 +45,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
               ),
             );
           }
-          // if (snapshot.data!.docs.isEmpty) {
-          //   return const Center(
-          //     child: Text(
-          //       "this category has no items yet",
-          //       textAlign: TextAlign.center,
-          //       style: TextStyle(
-          //           fontFamily: "Acme",
-          //           letterSpacing: 1.5,
-          //           fontSize: 24,
-          //           color: Colors.blueGrey,
-          //           fontWeight: FontWeight.bold),
-          //     ),
-          //   );
-          // }
+
           return Material(
             color: Colors.grey.shade200,
             child: SafeArea(
@@ -204,17 +191,26 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.spaceAround,
                                               children: [
-                                                Text(
-                                                  order.name,
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color:
-                                                          Colors.grey.shade600),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 17),
+                                                    child: Text(
+                                                      order.name,
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors
+                                                              .grey.shade600),
+                                                    ),
+                                                  ),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
@@ -226,15 +222,32 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      Text(
-                                                        order.price.toString(),
-                                                        style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Colors
-                                                                .grey.shade600),
-                                                      ),
+                                                      RichText(
+                                                          text: TextSpan(
+                                                              children: [
+                                                            TextSpan(
+                                                              text: "Rs  ",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade700),
+                                                            ),
+                                                            TextSpan(
+                                                              text: order.price
+                                                                  .toString(),
+                                                              style: const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .red),
+                                                            )
+                                                          ])),
                                                       Text(
                                                         'x${order.qty.toString()}',
                                                         style: TextStyle(

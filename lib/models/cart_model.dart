@@ -52,13 +52,23 @@ class CartModel extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            product.price.toStringAsFixed(2),
-                            style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          ),
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                              text: "Rs  ",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade700),
+                            ),
+                            TextSpan(
+                              text: product.price.toStringAsFixed(2),
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            )
+                          ])),
                           Container(
                             height: 35,
                             decoration: BoxDecoration(

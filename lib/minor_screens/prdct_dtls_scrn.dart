@@ -26,11 +26,6 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  // late final Stream<QuerySnapshot> _proListStream = FirebaseFirestore.instance
-  //     .collection('proList')
-  //     .where("maincategory", isEqualTo: widget.proList["maincategory"])
-  //     .where("subcategory", isEqualTo: widget.proList["subcategory"])
-  //     .snapshots();
   late final Stream<QuerySnapshot> _proListStream = FirebaseFirestore.instance
       .collection('products')
       .where("maincategory", isEqualTo: widget.proList["maincategory"])
@@ -134,7 +129,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               children: [
                                 Text("Rs ",
                                     style: TextStyle(
-                                        color: Colors.grey.shade600,
+                                        color: const Color.fromARGB(
+                                            255, 93, 77, 77),
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
                                 Text(
@@ -164,7 +160,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
                                       )
-                                    : const Text("data")
+                                    : const SizedBox()
                               ],
                             ),
                             IconButton(

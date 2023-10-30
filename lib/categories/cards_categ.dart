@@ -21,7 +21,7 @@ class CardsCategory extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CategoryHeaderLabel(headerLabel: "CARD'S"),
+                  const CategoryHeaderLabel(headerLabel: "CARDefghjgfdgi'S"),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.60,
                     child: GridView.count(

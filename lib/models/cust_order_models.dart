@@ -16,6 +16,7 @@ class CustomerOrderModel extends StatefulWidget {
 class _CustomerOrderModelState extends State<CustomerOrderModel> {
   late double rate;
   late String comment;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,10 +37,13 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 15),
-                  child: Container(
-                    constraints:
-                        const BoxConstraints(maxHeight: 80, maxWidth: 80),
-                    child: Image.network(widget.order["orderimage"]),
+                  child: SizedBox(
+                    height: 50,
+                    width: 55,
+                    child: Image.network(
+                      widget.order["orderimage"],
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Flexible(
@@ -48,19 +52,22 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          widget.order["ordername"],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.grey.shade600,
-                              fontWeight: FontWeight.w600),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            widget.order["ordername"],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(13.0),
                       child: Row(
                         children: [
                           Text(("Rs") +
@@ -77,10 +84,10 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "see more...",
-                style: TextStyle(color: Colors.blue),
-              ),
+              // const Text(
+              //   "see more...",
+              //   style: TextStyle(color: Colors.blue),
+              // ),
               Text(widget.order["deliverystatus"]),
             ],
           ),
