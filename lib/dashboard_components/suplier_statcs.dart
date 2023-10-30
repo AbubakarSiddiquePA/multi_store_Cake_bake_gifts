@@ -21,10 +21,10 @@ class Statics extends StatelessWidget {
               ),
             );
           }
-          num itemCount = 0;
-          for (var item in snapshot.data!.docs) {
-            itemCount += item["orderqty"];
-          }
+          // num itemCount = 0;
+          // for (var item in snapshot.data!.docs) {
+          //   // itemCount += item["orderqty"];
+          // }
           double totalPrice = 0.0;
           for (var item in snapshot.data!.docs) {
             totalPrice += item["orderqty"] * item["orderprice"] + 2;
@@ -43,14 +43,14 @@ class Statics extends StatelessWidget {
                 children: [
                   StaticsModel(
                     label: "Sold Out",
-                    value: snapshot.data!.docs.length,
-                    decimal: 0,
+                    value: snapshot.data?.docs.length ?? 0,
+                    decimal: 2,
                   ),
-                  StaticsModel(
-                    label: "Item Count",
-                    value: itemCount,
-                    decimal: 0,
-                  ),
+                  // StaticsModel(
+                  //   label: "Item Count",
+                  //   value: itemCount,
+                  //   decimal: 2,
+                  // ),
                   StaticsModel(
                     label: "Total Balance",
                     value: totalPrice,
@@ -111,13 +111,17 @@ class StaticsModel extends StatelessWidget {
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15))),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedCounter(
                   count: value,
                   decimal: decimal,
                 ),
-                Text(style: const TextStyle(color: Colors.white), rs.toString())
+                // Text(
+
+                //     style: const TextStyle(
+                //         color: Color.fromARGB(255, 148, 52, 52)),
+                //     rs.toString())
               ],
             )),
       ],

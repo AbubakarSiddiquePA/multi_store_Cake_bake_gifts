@@ -80,7 +80,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           .contains(searchInput.toLowerCase()));
 
                   if (result.isEmpty) {
-                    return Center(
+                    return const Center(
                       child: Text("No Results Found!"),
                     );
                   }

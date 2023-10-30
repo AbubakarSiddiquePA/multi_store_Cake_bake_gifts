@@ -1,9 +1,6 @@
 import 'package:bake_store/categories/bake_categ.dart';
-import 'package:bake_store/categories/cards_categ.dart';
 import 'package:bake_store/categories/flowers_categ.dart';
 import 'package:bake_store/categories/gifts_categ.dart';
-import 'package:bake_store/categories/hampers_categ.dart';
-import 'package:bake_store/categories/save_th_d_categ.dart';
 import 'package:bake_store/widgets/fake_search.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +10,9 @@ List<ItemData> items = [
   ItemData(label: "Cake"),
   ItemData(label: "Bake"),
   ItemData(label: "Gifts"),
-  ItemData(label: "Hampers"),
-  ItemData(label: "Cards"),
-  ItemData(label: "SaveTheDate"),
+  // ItemData(label: "Hampers"),
+  // ItemData(label: "Cards"),
+  // ItemData(label: "SaveTheDate"),
   ItemData(label: "Flowers"),
 ];
 
@@ -112,9 +109,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
           CakeCategory(),
           BakeCategory(),
           GiftCategory(),
-          HampersCategory(),
-          CardsCategory(),
-          SaveTheDate(),
+          // HampersCategory(),
+          // CardsCategory(),
+          // SaveTheDate(),
           FlowersCategory(),
         ],
       ),

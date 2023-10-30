@@ -33,9 +33,9 @@ class BakeCategory extends StatelessWidget {
                           (index) {
                             return SubCategModel(
                               mainCategName: "bake",
-                              subCategName: cake[index + 1],
-                              assetName: "images/cake/cake$index.jpg",
-                              subCategLabel: cake[index + 1],
+                              subCategName: bake[index + 1],
+                              assetName: "images/bake/bake$index.jpg",
+                              subCategLabel: bake[index + 1],
                             );
                           },
                         )),

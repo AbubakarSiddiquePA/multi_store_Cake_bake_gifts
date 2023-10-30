@@ -45,7 +45,7 @@ class Balance extends StatelessWidget {
                     rs: "Rs",
                   ),
                   const SizedBox(
-                    height: 100,
+                    height: 50,
                   ),
                   Container(
                     height: 45,
@@ -114,7 +114,7 @@ class BalanceModel extends StatelessWidget {
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15))),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AnimatedCounter(
                   count: value,

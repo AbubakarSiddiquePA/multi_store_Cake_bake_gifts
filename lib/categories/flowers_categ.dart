@@ -33,9 +33,9 @@ class FlowersCategory extends StatelessWidget {
                           (index) {
                             return SubCategModel(
                               mainCategName: "Flowers",
-                              subCategName: cake[index + 1],
-                              assetName: "images/cake/cake$index.jpg",
-                              subCategLabel: cake[index + 1],
+                              subCategName: flowers[index + 1],
+                              assetName: "images/flowers/flowers$index.jpg",
+                              subCategLabel: flowers[index + 1],
                             );
                           },
                         )),

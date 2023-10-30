@@ -85,6 +85,9 @@ flutter:
   assets:
     - images/
     - images/cake/
+    - images/bake/
+    - images/gift/
+    - images/flowers/
     - images/logo/
     - images/profile/
     - images/store/

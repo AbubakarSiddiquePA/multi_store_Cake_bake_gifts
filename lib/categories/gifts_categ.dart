@@ -33,9 +33,9 @@ class GiftCategory extends StatelessWidget {
                           (index) {
                             return SubCategModel(
                               mainCategName: "gifts",
-                              subCategName: cake[index + 1],
-                              assetName: "images/cake/cake$index.jpg",
-                              subCategLabel: cake[index + 1],
+                              subCategName: gifts[index + 1],
+                              assetName: "images/gift/gift$index.jpg",
+                              subCategLabel: gifts[index + 1],
                             );
                           },
                         )),

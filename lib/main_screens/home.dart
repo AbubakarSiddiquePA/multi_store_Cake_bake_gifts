@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 7,
+      length: 4,
       child: Scaffold(
         backgroundColor: Colors.blueGrey.shade100.withOpacity(0.5),
         appBar: AppBar(
@@ -40,18 +40,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 RepeatedTab(
                   label: 'Gift',
                 ),
-                RepeatedTab(
-                  label: 'Hampers',
-                ),
-                RepeatedTab(
-                  label: 'Save the date',
-                ),
+                // RepeatedTab(
+                //   label: 'Hampers',
+                // ),
+                // RepeatedTab(
+                //   label: 'Save the date',
+                // ),
                 RepeatedTab(
                   label: 'Flowers',
                 ),
-                RepeatedTab(
-                  label: 'Cards',
-                ),
+                // RepeatedTab(
+                //   label: 'Cards',
+                // ),
               ]),
         ),
         body: const TabBarView(
@@ -59,10 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
             CakeGalleryScreen(),
             BakeGalleryScreen(),
             GiftGalleryScreen(),
-            HampersGallery(),
-            SaveTheDateGallery(),
+            // HampersGallery(),
+            // SaveTheDateGallery(),
             FlowersGallery(),
-            CardsGallery(),
+            // CardsGallery(),
           ],
         ),
       ),
