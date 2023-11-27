@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -20,7 +19,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   CollectionReference anonymous =
       FirebaseFirestore.instance.collection("anonymous");
-  late String _uid;
+  // late String _uid;
 
   @override
   void initState() {

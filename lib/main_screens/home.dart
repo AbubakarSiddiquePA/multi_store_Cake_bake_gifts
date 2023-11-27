@@ -1,10 +1,7 @@
 import 'package:bake_store/galleries/bake_gallery.dart';
 import 'package:bake_store/galleries/cake_gallery.dart';
-import 'package:bake_store/galleries/cards.dart';
 import 'package:bake_store/galleries/flowers.dart';
 import 'package:bake_store/galleries/gitts_gallery.dart';
-import 'package:bake_store/galleries/hampers.dart';
-import 'package:bake_store/galleries/save_the_date.dart';
 import 'package:flutter/material.dart';
 import '../widgets/fake_search.dart';
 

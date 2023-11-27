@@ -380,7 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           color: Colors.white,
                           child: const Center(
                             child: Text(
-                              'Version 1.0.01',
+                              'Version 1.0.04',
                               style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 24,
