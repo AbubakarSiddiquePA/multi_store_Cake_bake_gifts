@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/providers/razorpay.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
