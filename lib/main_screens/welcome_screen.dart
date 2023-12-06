@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -41,23 +39,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return SafeArea(
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage("images/logo/welcome.jpeg"))),
           constraints: const BoxConstraints.expand(),
           child: SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const AnimatedTextKits(),
-                // const Text(
-                //   "Welcome",
-                //   style: TextStyle(
-                //     color: Colors.white,
-                //     fontSize: 34,
-                //   ),
-                // ),
                 const SizedBox(
                   height: 120,
                   width: 200,
@@ -79,155 +66,114 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             ),
                           ),
                           child: const Padding(
-                            padding: EdgeInsets.all(12.0),
+                            padding: EdgeInsets.all(7.0),
                             child: Text(
-                              "Suppliers LogIn",
+                              "Please choose who you are?",
                               style: TextStyle(
+                                  letterSpacing: 5.5,
                                   color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
-                        Container(
-                          height: 60,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(50),
-                              bottomLeft: Radius.circular(50),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AnimatedLogo(controller: _controller),
-                              yellowButtonCstm(
-                                  label: "LogIn",
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, "/supplier_login");
-                                  },
-                                  width: 0.25,
-                                  colore: Colors.white),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child: yellowButtonCstm(
-                                    label: "SignUp",
-                                    onPressed: () {
-                                      Navigator.pushReplacementNamed(
-                                          context, "/supplier_signup");
-                                    },
-                                    width: 0.25,
-                                    colore: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   height: 60,
+                        //   width: MediaQuery.of(context).size.width * 0.9,
+                        //   decoration: const BoxDecoration(
+                        //     color: Colors.black,
+                        //     borderRadius: BorderRadius.only(
+                        //       topLeft: Radius.circular(50),
+                        //       bottomLeft: Radius.circular(50),
+                        //     ),
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       // AnimatedLogo(controller: _controller),
+                        //       yellowButtonCstm(
+                        //           label: "LogIn",
+                        //           onPressed: () {
+                        //             Navigator.pushReplacementNamed(
+                        //                 context, "/supplier_login");
+                        //           },
+                        //           width: 0.25,
+                        //           colore: Colors.white),
+                        //       Padding(
+                        //         padding: const EdgeInsets.only(right: 8),
+                        //         child: yellowButtonCstm(
+                        //             label: "SignUp",
+                        //             onPressed: () {
+                        //               Navigator.pushReplacementNamed(
+                        //                   context, "/supplier_signup");
+                        //             },
+                        //             width: 0.25,
+                        //             colore: Colors.white),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
                       ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 45),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 60,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: yellowButtonCstm(
-                                  label: "LogIn",
-                                  onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, "/customer_login");
-                                  },
-                                  width: 0.25,
-                                  colore: Colors.white),
-                            ),
-                            yellowButtonCstm(
-                                label: "SignUp",
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, "/customer_signup");
-                                },
-                                width: 0.25,
-                                colore: Colors.white),
-                            AnimatedLogo(controller: _controller)
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                TextButton(
+                    onPressed: () {}, child: const Text("Iam a Seller ")),
+                const SizedBox(height: 10),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, "/Userscreen_login");
+                    },
+                    child: const Text("Iam a customer ")),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 45),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.start,
+                //     children: [
+                //       Container(
+                //         height: 60,
+                //         width: MediaQuery.of(context).size.width * 0.9,
+                //         decoration: const BoxDecoration(
+                //           color: Colors.black,
+                //           borderRadius: BorderRadius.only(
+                //             topRight: Radius.circular(50),
+                //             bottomRight: Radius.circular(50),
+                //           ),
+                //         ),
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //           children: [
+                //             Padding(
+                //               padding: const EdgeInsets.only(left: 8),
+                //               child: yellowButtonCstm(
+                //                   label: "LogIn",
+                //                   onPressed: () {
+                //                     Navigator.pushReplacementNamed(
+                //                         context, "/customer_login");
+                //                   },
+                //                   width: 0.25,
+                //                   colore: Colors.white),
+                //             ),
+                //             yellowButtonCstm(
+                //                 label: "SignUp",
+                //                 onPressed: () {
+                //                   Navigator.pushReplacementNamed(
+                //                       context, "/customer_signup");
+                //                 },
+                //                 width: 0.25,
+                //                 colore: Colors.white),
+                //           ],
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.transparent,
                   ),
-                  // child: Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  //   children: [
-                  //     // GoogleFacebookLogin(
-                  //     //   label: "Google",
-                  //     //   child: const Image(
-                  //     //       image: AssetImage("images/logo/google_logo.png")),
-                  //     //   onPressed: () {},
-                  //     // ),
-                  //     // GoogleFacebookLogin(
-                  //     //   label: "Facebook",
-                  //     //   child: const Image(
-                  //     //       image: AssetImage("images/logo/fb_logo.png")),
-                  //     //   onPressed: () {},
-                  //     // ),
-                  //     processing == true
-                  //         ? const CircularProgressIndicator()
-                  //         : GoogleFacebookLogin(
-                  //             label: "Guest",
-                  //             child: const Icon(
-                  //               Icons.person,
-                  //               size: 28,
-                  //               color: Colors.blueAccent,
-                  //             ),
-                  //             onPressed: () async {
-                  //               setState(() {
-                  //                 processing = true;
-                  //               });
-                  //               await FirebaseAuth.instance
-                  //                   .signInAnonymously()
-                  //                   .whenComplete(() async {
-                  //                 _uid = FirebaseAuth.instance.currentUser!.uid;
-
-                  //                 await anonymous.doc(_uid).set({
-                  //                   "name": "",
-                  //                   "email": "",
-                  //                   "profileimage": "",
-                  //                   "phone": "",
-                  //                   "address": "",
-                  //                   "cid": _uid
-                  //                 });
-                  //               });
-
-                  //               // ignore: use_build_context_synchronously
-                  //               Navigator.pushReplacementNamed(
-                  //                   context, "/customer_screen");
-                  //             },
-                  //           ),
-                  //   ],
-                  // ),
                 )
               ],
             ),
@@ -271,59 +217,38 @@ class AnimatedTextKits extends StatelessWidget {
   }
 }
 
-class AnimatedLogo extends StatelessWidget {
-  const AnimatedLogo({
-    super.key,
-    required AnimationController controller,
-  }) : _controller = controller;
 
-  final AnimationController _controller;
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller.view,
-      builder: (context, child) {
-        return Transform.rotate(
-          angle: _controller.value * 2 * pi,
-          child: child,
-        );
-      },
-      child: const Image(image: AssetImage("images/logo/app_logo1.png")),
-    );
-  }
-}
+// class GoogleFacebookLogin extends StatelessWidget {
+//   final String label;
+//   final Function() onPressed;
+//   final Widget child;
+//   const GoogleFacebookLogin(
+//       {super.key,
+//       required this.child,
+//       required this.label,
+//       required this.onPressed});
 
-class GoogleFacebookLogin extends StatelessWidget {
-  final String label;
-  final Function() onPressed;
-  final Widget child;
-  const GoogleFacebookLogin(
-      {super.key,
-      required this.child,
-      required this.label,
-      required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: InkWell(
-        onTap: onPressed,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 25,
-              width: 25,
-              child: child,
-            ),
-            Text(
-              label,
-              style: const TextStyle(color: Colors.white),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.symmetric(vertical: 8),
+//       child: InkWell(
+//         onTap: onPressed,
+//         child: Column(
+//           children: [
+//             SizedBox(
+//               height: 25,
+//               width: 25,
+//               child: child,
+//             ),
+//             Text(
+//               label,
+//               style: const TextStyle(color: Colors.white),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

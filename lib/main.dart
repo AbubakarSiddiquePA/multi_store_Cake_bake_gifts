@@ -3,6 +3,7 @@ import 'package:bake_store/auth/splier_login.dart';
 import 'package:bake_store/auth/splier_signup.dart';
 import 'package:bake_store/main_screens/cstmr_home.dart';
 import 'package:bake_store/main_screens/splier_home.dart';
+import 'package:bake_store/main_screens/user_log_screen.dart';
 import 'package:bake_store/providers/cart_providers.dart';
 import 'package:bake_store/providers/wish_provider.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         "/customer_login": (context) => const CustomerLogin(),
         "/supplier_signup": (context) => const SupplierRegister(),
         "/supplier_login": (context) => const SupplierLogin(),
+        "/Userscreen_login": (context) => const UserScreenLogin(),
       },
     );
   }
