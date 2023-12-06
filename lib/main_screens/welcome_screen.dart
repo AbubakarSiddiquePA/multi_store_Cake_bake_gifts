@@ -1,4 +1,3 @@
-import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -42,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           constraints: const BoxConstraints.expand(),
           child: SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const AnimatedTextKits(),
                 const SizedBox(
@@ -55,11 +54,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Container(
                           decoration: const BoxDecoration(
-                            color: Colors.black,
+                            color: Colors.black38,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(50),
                               bottomLeft: Radius.circular(50),
@@ -70,106 +68,49 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             child: Text(
                               "Please choose who you are?",
                               style: TextStyle(
-                                  letterSpacing: 5.5,
+                                  letterSpacing: 4.5,
                                   color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
                         ),
-                        // Container(
-                        //   height: 60,
-                        //   width: MediaQuery.of(context).size.width * 0.9,
-                        //   decoration: const BoxDecoration(
-                        //     color: Colors.black,
-                        //     borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(50),
-                        //       bottomLeft: Radius.circular(50),
-                        //     ),
-                        //   ),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       // AnimatedLogo(controller: _controller),
-                        //       yellowButtonCstm(
-                        //           label: "LogIn",
-                        //           onPressed: () {
-                        //             Navigator.pushReplacementNamed(
-                        //                 context, "/supplier_login");
-                        //           },
-                        //           width: 0.25,
-                        //           colore: Colors.white),
-                        //       Padding(
-                        //         padding: const EdgeInsets.only(right: 8),
-                        //         child: yellowButtonCstm(
-                        //             label: "SignUp",
-                        //             onPressed: () {
-                        //               Navigator.pushReplacementNamed(
-                        //                   context, "/supplier_signup");
-                        //             },
-                        //             width: 0.25,
-                        //             colore: Colors.white),
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
                       ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                TextButton(
-                    onPressed: () {}, child: const Text("Iam a Seller ")),
-                const SizedBox(height: 10),
-                TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, "/Userscreen_login");
-                    },
-                    child: const Text("Iam a customer ")),
-                // Padding(
-                //   padding: const EdgeInsets.only(bottom: 45),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.start,
-                //     children: [
-                //       Container(
-                //         height: 60,
-                //         width: MediaQuery.of(context).size.width * 0.9,
-                //         decoration: const BoxDecoration(
-                //           color: Colors.black,
-                //           borderRadius: BorderRadius.only(
-                //             topRight: Radius.circular(50),
-                //             bottomRight: Radius.circular(50),
-                //           ),
-                //         ),
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //           children: [
-                //             Padding(
-                //               padding: const EdgeInsets.only(left: 8),
-                //               child: yellowButtonCstm(
-                //                   label: "LogIn",
-                //                   onPressed: () {
-                //                     Navigator.pushReplacementNamed(
-                //                         context, "/customer_login");
-                //                   },
-                //                   width: 0.25,
-                //                   colore: Colors.white),
-                //             ),
-                //             yellowButtonCstm(
-                //                 label: "SignUp",
-                //                 onPressed: () {
-                //                   Navigator.pushReplacementNamed(
-                //                       context, "/customer_signup");
-                //                 },
-                //                 width: 0.25,
-                //                 colore: Colors.white),
-                //           ],
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                TextButton.icon(
+                  label: const Text("I' am a Seller"),
+                  icon: const Icon(Icons.sell),
+                  style: TextButton.styleFrom(
+                      foregroundColor: Colors.black38,
+                      textStyle: const TextStyle(
+
+                          // color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, "/Sellerscreen_login");
+                  },
+                ),
+                // const SizedBox(height: 10),
+                TextButton.icon(
+                  label: const Text("I' am a Customer"),
+                  icon: const Icon(Icons.people_rounded),
+                  style: TextButton.styleFrom(
+                      foregroundColor: Colors.black38,
+                      textStyle: const TextStyle(
+
+                          // color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold)),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, "/Userscreen_login");
+                  },
+                ),
                 Container(
                   decoration: const BoxDecoration(
                     color: Colors.transparent,
@@ -216,39 +157,3 @@ class AnimatedTextKits extends StatelessWidget {
         ]);
   }
 }
-
-
-
-// class GoogleFacebookLogin extends StatelessWidget {
-//   final String label;
-//   final Function() onPressed;
-//   final Widget child;
-//   const GoogleFacebookLogin(
-//       {super.key,
-//       required this.child,
-//       required this.label,
-//       required this.onPressed});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 8),
-//       child: InkWell(
-//         onTap: onPressed,
-//         child: Column(
-//           children: [
-//             SizedBox(
-//               height: 25,
-//               width: 25,
-//               child: child,
-//             ),
-//             Text(
-//               label,
-//               style: const TextStyle(color: Colors.white),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

@@ -2,6 +2,7 @@ import 'package:bake_store/auth/signup_cstmr.dart';
 import 'package:bake_store/auth/splier_login.dart';
 import 'package:bake_store/auth/splier_signup.dart';
 import 'package:bake_store/main_screens/cstmr_home.dart';
+import 'package:bake_store/main_screens/seller_login_screen.dart';
 import 'package:bake_store/main_screens/splier_home.dart';
 import 'package:bake_store/main_screens/user_log_screen.dart';
 import 'package:bake_store/providers/cart_providers.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         "/supplier_signup": (context) => const SupplierRegister(),
         "/supplier_login": (context) => const SupplierLogin(),
         "/Userscreen_login": (context) => const UserScreenLogin(),
+        "/Sellerscreen_login": (context) => const SellerLoginScreen(),
       },
     );
   }
