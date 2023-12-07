@@ -170,7 +170,7 @@ class _CustomerRegisterState extends State<SupplierRegister> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      const AuthHeaderLabel(headerLabel: "Sign Up Supplier"),
+                      const AuthHeaderLabel(headerLabel: "SignUp Seller"),
                       Row(
                         children: [
                           Padding(

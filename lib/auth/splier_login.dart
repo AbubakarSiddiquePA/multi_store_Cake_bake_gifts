@@ -95,7 +95,7 @@ class _CustomerLoginState extends State<SupplierLogin> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const AuthHeaderLabel(headerLabel: "Log In Supplier"),
+                      const AuthHeaderLabel(headerLabel: "LogIn Seller"),
                       SizedBox(
                           height: 50,
                           child: sendEmailVerification == true
