@@ -4,6 +4,7 @@ import 'package:bake_store/customer_screens/address_book.dart';
 import 'package:bake_store/customer_screens/custmr_orders.dart';
 import 'package:bake_store/customer_screens/wishlist.dart';
 import 'package:bake_store/main_screens/cart.dart';
+import 'package:bake_store/main_screens/delete_privacy_policy.dart';
 import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -306,7 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Container(
-                                      height: 170,
+                                      height: 250,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(25),
@@ -361,6 +362,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               "/welcome_screen");
                                                     });
                                                   });
+                                            },
+                                          ),
+                                          const GreyDivider(),
+                                          RepeatedListTile(
+                                            title:
+                                                "Delete Account/Privacy Policy",
+                                            icon: Icons.delete_forever,
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DeletePrivacyPolicyScreen()));
                                             },
                                           ),
                                         ],

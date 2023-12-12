@@ -14,7 +14,7 @@ import '../widgets/alert_dialg.dart';
 List<String> label = [
   "my store",
   "orders",
-  "edit profile",
+  "Privacy policy & account deletion",
   "manage products",
   "balance",
   "statics"
@@ -22,7 +22,7 @@ List<String> label = [
 List<IconData> icons = [
   Icons.store,
   Icons.shop,
-  Icons.edit,
+  Icons.info,
   Icons.settings,
   Icons.currency_rupee,
   Icons.show_chart,
@@ -31,7 +31,7 @@ List<IconData> icons = [
 List<Widget> pages = [
   VisitStore(suppId: FirebaseAuth.instance.currentUser!.uid),
   const SupllierOrders(),
-  const EditBuisness(),
+  const AccountInfo(),
   const ManageProduct(),
   const Balance(),
   const Statics(),
