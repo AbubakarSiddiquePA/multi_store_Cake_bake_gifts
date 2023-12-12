@@ -6,6 +6,7 @@ import 'package:bake_store/widgets/appbar_widgets.dart';
 import 'package:bake_store/widgets/snackbar.dart';
 import 'package:bake_store/widgets/yellow_btn.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
@@ -43,11 +44,97 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
+
   @override
   Widget build(BuildContext context) {
     var onSale = widget.proList["discount"];
     var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
         (Product) => Product.documentId == widget.proList["proid"]);
+
+    final bottomBar = widget.proList["sid"] !=
+            FirebaseAuth.instance.currentUser!.uid
+        ? BottomAppBar(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      VisitStore(suppId: widget.proList['sid']),
+                                ));
+                          },
+                          icon: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12.5),
+                            child: Icon(Icons.store),
+                          )),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      badges.Badge(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CartScreen(back: AppBarBackButton()),
+                              ));
+                        },
+                        ignorePointer: false,
+                        showBadge: context.read<Cart>().getItems.isEmpty
+                            ? false
+                            : true,
+                        // stackFit: StackFit.loose,
+                        badgeStyle: const badges.BadgeStyle(
+                            badgeColor: Colors.blueGrey),
+                        badgeContent: Text(
+                          context.watch<Cart>().getItems.length.toString(),
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        child: const Icon(Icons.shopping_cart),
+                      ),
+                    ],
+                  ),
+                  yellowButtonCstm(
+                      label: existingItemCart != null
+                          ? "added to cart"
+                          : "Add to cart",
+                      onPressed: () {
+                        if (widget.proList["instock"] == 0) {
+                          MyMessageHandler.showSnackBar(
+                              _scaffoldKey, "this item is out of stock");
+                        } else if (existingItemCart != null) {
+                          MyMessageHandler.showSnackBar(
+                              _scaffoldKey, "this item is already in cart");
+                        } else {
+                          context.read<Cart>().addItem(
+                              name: widget.proList["proname"],
+                              price: onSale != 0
+                                  ? ((1 - (onSale / 100)) *
+                                      widget.proList["price"])
+                                  : widget.proList["price"],
+                              qty: 1,
+                              qntty: widget.proList["instock"],
+                              imagesUrl: widget.proList["proimages"],
+                              documentId: widget.proList["proid"],
+                              suppId: widget.proList["sid"]);
+                        }
+                      },
+                      width: 0.55,
+                      colore: Colors.blueGrey)
+                ],
+              ),
+            ),
+          )
+        : null;
+
     return SafeArea(
       child: ScaffoldMessenger(
         key: _scaffoldKey,
@@ -296,86 +383,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      VisitStore(suppId: widget.proList['sid']),
-                                ));
-                          },
-                          icon: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12.5),
-                            child: Icon(Icons.store),
-                          )),
-                      const SizedBox(
-                        width: 30,
-                      ),
-                      badges.Badge(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const CartScreen(back: AppBarBackButton()),
-                              ));
-                        },
-                        ignorePointer: false,
-                        showBadge: context.read<Cart>().getItems.isEmpty
-                            ? false
-                            : true,
-                        // stackFit: StackFit.loose,
-                        badgeStyle: const badges.BadgeStyle(
-                            badgeColor: Colors.blueGrey),
-                        badgeContent: Text(
-                          context.watch<Cart>().getItems.length.toString(),
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        child: const Icon(Icons.shopping_cart),
-                      ),
-                    ],
-                  ),
-                  yellowButtonCstm(
-                      label: existingItemCart != null
-                          ? "added to cart"
-                          : "Add to cart",
-                      onPressed: () {
-                        if (widget.proList["instock"] == 0) {
-                          MyMessageHandler.showSnackBar(
-                              _scaffoldKey, "this item is out of stock");
-                        } else if (existingItemCart != null) {
-                          MyMessageHandler.showSnackBar(
-                              _scaffoldKey, "this item is already in cart");
-                        } else {
-                          context.read<Cart>().addItem(
-                              name: widget.proList["proname"],
-                              price: onSale != 0
-                                  ? ((1 - (onSale / 100)) *
-                                      widget.proList["price"])
-                                  : widget.proList["price"],
-                              qty: 1,
-                              qntty: widget.proList["instock"],
-                              imagesUrl: widget.proList["proimages"],
-                              documentId: widget.proList["proid"],
-                              suppId: widget.proList["sid"]);
-                        }
-                      },
-                      width: 0.55,
-                      colore: Colors.blueGrey)
-                ],
-              ),
-            ),
-          ),
+          bottomNavigationBar: bottomBar,
         ),
       ),
     );
