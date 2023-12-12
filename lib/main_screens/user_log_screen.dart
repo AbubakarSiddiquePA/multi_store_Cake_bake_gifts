@@ -1,4 +1,4 @@
-import 'package:bake_store/widgets/yellow_btn.dart';
+import 'package:bake_store/main_screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 class UserScreenLogin extends StatefulWidget {
@@ -13,51 +13,125 @@ class _UserScreenLoginState extends State<UserScreenLogin> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 45),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(50),
-                    bottomRight: Radius.circular(50),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: yellowButtonCstm(
-                          label: "LogIn",
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, "/customer_login");
-                          },
-                          width: 0.25,
-                          colore: Colors.white),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const AnimatedTextKits(),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Customer LogIn",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 30),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Stack(children: [
+                    Positioned(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 12),
+                        child: Container(
+                          width: 200,
+                          decoration: const BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(25),
+                              bottomRight: Radius.circular(25),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, "/customer_login");
+                              },
+                              child: const Text(
+                                "LogIn",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    yellowButtonCstm(
-                        label: "SignUp",
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(
-                              context, "/customer_signup");
-                        },
-                        width: 0.25,
-                        colore: Colors.white),
-                  ],
-                ),
+                    const CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 35,
+                      child: Icon(
+                        Icons.lock_open,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ]),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(children: [
+                        Positioned(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 12),
+                            child: Container(
+                              width: 200,
+                              decoration: const BoxDecoration(
+                                color: Colors.black45,
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  bottomRight: Radius.circular(25),
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, "/customer_signup");
+                                  },
+                                  child: const Text(
+                                    "SignUp",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const CircleAvatar(
+                          backgroundColor: Colors.black,
+                          radius: 35,
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ]),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            BackButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "/welcome_screen");
+              },
+            )
+          ],
         ),
-      )),
+      ),
     );
   }
 }

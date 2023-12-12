@@ -56,19 +56,6 @@ class _CustomerLoginState extends State<SupplierLogin> {
           processing = false;
         });
         MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
-        // if (e.code == 'user-not-found') {
-        //   setState(() {
-        //     processing = false;
-        //   });
-        //   MyMessageHandler.showSnackBar(
-        //       _scaffoldKey, "No user found for that email.");
-        // } else if (e.code == 'wrong-password') {
-        //   setState(() {
-        //     processing = false;
-        //   });
-        //   MyMessageHandler.showSnackBar(
-        //       _scaffoldKey, "Wrong password provided for that user.");
-        // }
       }
     } else {
       setState(() {
@@ -114,7 +101,8 @@ class _CustomerLoginState extends State<SupplierLogin> {
                                           print(e);
                                         }
 
-                                        Future.delayed(Duration(seconds: 3))
+                                        Future.delayed(
+                                                const Duration(seconds: 3))
                                             .whenComplete(() {
                                           setState(() {
                                             sendEmailVerification = false;
@@ -124,7 +112,7 @@ class _CustomerLoginState extends State<SupplierLogin> {
                                       width: 0.4,
                                       colore: Colors.blue),
                                 )
-                              : SizedBox()),
+                              : const SizedBox()),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: TextFormField(

@@ -43,12 +43,15 @@ class _ProductModelState extends State<ProductModel> {
                     child: Container(
                       constraints:
                           const BoxConstraints(minHeight: 100, maxHeight: 250),
-                      child: widget.products["proimages"] != null &&
-                              widget.products["proimages"].isNotEmpty
-                          ? Image(
-                              image:
-                                  NetworkImage(widget.products["proimages"][0]))
-                          : Container(),
+                      child: AspectRatio(
+                        aspectRatio: 1 / 1,
+                        child: widget.products["proimages"] != null &&
+                                widget.products["proimages"].isNotEmpty
+                            ? Image(
+                                image: NetworkImage(
+                                    widget.products["proimages"][0]))
+                            : Container(),
+                      ),
 
                       // child: Image(
                       //     image: NetworkImage(widget.products["proimages"][0])),
@@ -174,7 +177,7 @@ class _ProductModelState extends State<ProductModel> {
                       height: 20,
                       width: 80,
                       decoration: const BoxDecoration(
-                          color: Colors.yellow,
+                          color: Colors.blueGrey,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
                             topRight: Radius.circular(15),
@@ -184,8 +187,12 @@ class _ProductModelState extends State<ProductModel> {
                       ),
                     ),
                   )
-                : Container(
-                    color: Colors.transparent,
+                : Positioned(
+                    top: 30,
+                    left: 0,
+                    child: Container(
+                      color: Colors.transparent,
+                    ),
                   )
           ],
         ),

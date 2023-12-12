@@ -49,7 +49,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             icon: badges.Badge(
               showBadge: context.read<Cart>().getItems.isEmpty ? false : true,
               // stackFit: StackFit.expand,
-              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.yellow),
+              badgeStyle: const badges.BadgeStyle(badgeColor: Colors.blueGrey),
               badgeContent: Text(
                 context.watch<Cart>().getItems.length.toString(),
                 style:

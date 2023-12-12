@@ -29,7 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_text_kit: ^4.2.2
-  badges: ^3.1.1
+  badges: ^3.1.2
   cloud_firestore: ^4.8.2
   collection: ^1.17.1
   country_state_city_picker: ^1.2.8

@@ -56,7 +56,7 @@ class _VisitStoreState extends State<VisitStore> {
               flexibleSpace: data["coverimage"] == ""
                   ? Image.asset(
                       "images/logo/app_logo1.png",
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     )
                   : Image.network(
                       data["coverimage"],
@@ -70,7 +70,7 @@ class _VisitStoreState extends State<VisitStore> {
                     decoration: BoxDecoration(
                         border: Border.all(
                           width: 4,
-                          color: Colors.yellow,
+                          color: Colors.black,
                         ),
                         borderRadius: BorderRadius.circular(15)),
                     child: ClipRRect(
@@ -97,7 +97,9 @@ class _VisitStoreState extends State<VisitStore> {
                                 data["storeName"].toString().toUpperCase(),
                                 // FirebaseAuth.instance.currentUser!.displayName!,
                                 style: const TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black),
                               ),
                             ),
                           ],
@@ -108,7 +110,7 @@ class _VisitStoreState extends State<VisitStore> {
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25),
-                                    color: Colors.yellow,
+                                    color: Colors.blueGrey,
                                     border: Border.all(
                                         width: 3, color: Colors.black)),
                                 child: MaterialButton(
@@ -139,7 +141,7 @@ class _VisitStoreState extends State<VisitStore> {
                                 width: MediaQuery.of(context).size.width * 0.3,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25),
-                                    color: Colors.yellow,
+                                    color: Colors.blueGrey,
                                     border: Border.all(
                                         width: 3, color: Colors.black)),
                                 child: MaterialButton(
@@ -164,7 +166,7 @@ class _VisitStoreState extends State<VisitStore> {
                   )
                 ],
               ),
-              leading: const YellowBackButton(),
+              leading: const BackButton(),
             ),
             body: Padding(
               padding: const EdgeInsets.all(8.0),

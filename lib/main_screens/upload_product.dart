@@ -403,7 +403,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                             imagesFileList = [];
                           });
                         },
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.white,
                   child: imagesFileList!.isEmpty
                       ? const Icon(Icons.photo_library)
                       : const Icon(Icons.delete_forever)),
@@ -414,7 +414,7 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                   : () {
                       uploadProduct();
                     },
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.white,
               child: processing == true
                   ? const CircularProgressIndicator(
                       color: Colors.white,

@@ -24,7 +24,7 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.yellow,
+              color: Colors.black,
             ),
             borderRadius: BorderRadius.circular(15)),
         child: ExpansionTile(
@@ -67,10 +67,10 @@ class _CustomerOrderModelState extends State<CustomerOrderModel> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(13.0),
+                      padding: const EdgeInsets.all(9.0),
                       child: Row(
                         children: [
-                          Text(("Rs") +
+                          Text(("Rs ") +
                               (widget.order["orderprice"].toStringAsFixed(2))),
                           Text(("x") + (widget.order["orderqty"].toString())),
                         ],

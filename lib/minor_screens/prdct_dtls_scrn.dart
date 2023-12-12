@@ -48,12 +48,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     var onSale = widget.proList["discount"];
     var existingItemCart = context.read<Cart>().getItems.firstWhereOrNull(
         (Product) => Product.documentId == widget.proList["proid"]);
-    return Material(
-      child: SafeArea(
-        child: ScaffoldMessenger(
-          key: _scaffoldKey,
-          child: Scaffold(
-            body: SingleChildScrollView(
+    return SafeArea(
+      child: ScaffoldMessenger(
+        key: _scaffoldKey,
+        child: Scaffold(
+          body: SingleChildScrollView(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 1.55,
               child: Column(
                 children: [
                   InkWell(
@@ -83,7 +84,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           left: 15,
                           top: 20,
                           child: CircleAvatar(
-                            backgroundColor: Colors.yellow,
+                            backgroundColor: Colors.blueGrey,
                             child: IconButton(
                                 onPressed: () {
                                   Navigator.pop(context);
@@ -98,7 +99,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             right: 15,
                             top: 20,
                             child: CircleAvatar(
-                              backgroundColor: Colors.yellow,
+                              backgroundColor: Colors.blueGrey,
                               child: IconButton(
                                   onPressed: () {},
                                   icon: const Icon(
@@ -127,10 +128,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           children: [
                             Row(
                               children: [
-                                Text("Rs ",
+                                const Text("Rs ",
                                     style: TextStyle(
-                                        color: const Color.fromARGB(
-                                            255, 93, 77, 77),
+                                        color: Color.fromARGB(255, 93, 77, 77),
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold)),
                                 Text(
@@ -295,7 +295,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ],
               ),
             ),
-            bottomSheet: Padding(
+          ),
+          bottomNavigationBar: BottomAppBar(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -311,36 +313,36 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       VisitStore(suppId: widget.proList['sid']),
                                 ));
                           },
-                          icon: const Icon(Icons.store)),
+                          icon: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 12.5),
+                            child: Icon(Icons.store),
+                          )),
                       const SizedBox(
-                        width: 20,
+                        width: 30,
                       ),
-                      IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const CartScreen(
-                                      back: AppBarBackButton()),
-                                ));
-                          },
-                          icon: badges.Badge(
-                              showBadge: context.read<Cart>().getItems.isEmpty
-                                  ? false
-                                  : true,
-                              stackFit: StackFit.expand,
-                              badgeStyle: const badges.BadgeStyle(
-                                  badgeColor: Colors.yellow),
-                              badgeContent: Text(
-                                context
-                                    .watch<Cart>()
-                                    .getItems
-                                    .length
-                                    .toString(),
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              child: const Icon(Icons.shopping_cart))),
+                      badges.Badge(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const CartScreen(back: AppBarBackButton()),
+                              ));
+                        },
+                        ignorePointer: false,
+                        showBadge: context.read<Cart>().getItems.isEmpty
+                            ? false
+                            : true,
+                        // stackFit: StackFit.loose,
+                        badgeStyle: const badges.BadgeStyle(
+                            badgeColor: Colors.blueGrey),
+                        badgeContent: Text(
+                          context.watch<Cart>().getItems.length.toString(),
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        child: const Icon(Icons.shopping_cart),
+                      ),
                     ],
                   ),
                   yellowButtonCstm(
@@ -369,7 +371,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         }
                       },
                       width: 0.55,
-                      colore: Colors.yellow)
+                      colore: Colors.blueGrey)
                 ],
               ),
             ),

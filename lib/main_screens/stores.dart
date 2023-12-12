@@ -41,26 +41,25 @@ class StoresScreen extends StatelessWidget {
                       children: [
                         Stack(
                           children: [
-                            SizedBox(
-                              height: 120,
-                              width: 120,
-                              child: Image.asset("images/store/store (2).gif"),
+                            Image.asset(
+                              "images/store/store (2).gif",
                             ),
                             Positioned(
-                                bottom: 28,
-                                left: 10,
-                                height: 48,
-                                width: 50,
-                                child: Image.network(
+                              top: 60,
+                              right: 3,
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundImage: NetworkImage(
                                   snapshot.data!.docs[index]["storeLogo"],
-                                  fit: BoxFit.cover,
-                                ))
+                                ),
+                              ),
+                            )
                           ],
                         ),
                         Text(
                           snapshot.data!.docs[index]["storeName"],
-                          style: TextStyle(fontSize: 20),
-                        )
+                          style: const TextStyle(fontSize: 20),
+                        ),
                       ],
                     ),
                   );
