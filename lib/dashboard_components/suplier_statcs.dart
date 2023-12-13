@@ -21,10 +21,7 @@ class Statics extends StatelessWidget {
               ),
             );
           }
-          // num itemCount = 0;
-          // for (var item in snapshot.data!.docs) {
-          //   // itemCount += item["orderqty"];
-          // }
+
           double totalPrice = 0.0;
           for (var item in snapshot.data!.docs) {
             totalPrice += item["orderqty"] * item["orderprice"] + 2;
@@ -46,11 +43,6 @@ class Statics extends StatelessWidget {
                     value: snapshot.data?.docs.length ?? 0,
                     decimal: 2,
                   ),
-                  // StaticsModel(
-                  //   label: "Item Count",
-                  //   value: itemCount,
-                  //   decimal: 2,
-                  // ),
                   StaticsModel(
                     label: "Total Balance",
                     value: totalPrice,
@@ -68,6 +60,7 @@ class Statics extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class StaticsModel extends StatelessWidget {
   String? rs;
   final String label;

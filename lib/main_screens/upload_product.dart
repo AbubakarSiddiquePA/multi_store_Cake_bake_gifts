@@ -86,7 +86,6 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
     } else if (value == "flowers") {
       subCategList = flowers;
     }
-    print(value);
     setState(() {
       mainCategoryValue = value!;
       subCategValue = "subcategory";
@@ -251,7 +250,6 @@ class _UploadProductScreenState extends State<UploadProductScreen> {
                                   }).toList(),
 
                                   onChanged: (String? value) {
-                                    print(value);
                                     setState(() {
                                       subCategValue = value!;
                                     });

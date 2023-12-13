@@ -45,7 +45,6 @@ class _EditStoreState extends State<EditStore> {
       setState(() {
         _pickedImageError = e;
       });
-      print(_pickedImageError);
     }
   }
 
@@ -63,7 +62,6 @@ class _EditStoreState extends State<EditStore> {
       setState(() {
         _pickedImageError = e;
       });
-      print(_pickedImageError);
     }
   }
 

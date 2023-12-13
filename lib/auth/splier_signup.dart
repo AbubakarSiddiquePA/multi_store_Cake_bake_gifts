@@ -122,23 +122,6 @@ class _CustomerRegisterState extends State<SupplierRegister> {
             processing = false;
           });
           MyMessageHandler.showSnackBar(_scaffoldKey, e.message.toString());
-
-          // setState(() {
-          //   processing = false;
-          // });
-          // if (e.code == 'weak-password') {
-          //   setState(() {
-          //     processing = false;
-          //   });
-          //   MyMessageHandler.showSnackBar(
-          //       _scaffoldKey, "The password provided is too weak.");
-          // } else if (e.code == 'email-already-in-use') {
-          //   setState(() {
-          //     processing = false;
-          //   });
-          //   MyMessageHandler.showSnackBar(
-          //       _scaffoldKey, "The account already exists for that email.");
-          // }
         }
       } else {
         setState(() {

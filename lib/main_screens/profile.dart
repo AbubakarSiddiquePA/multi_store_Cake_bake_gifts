@@ -293,9 +293,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   },
                                             title: "Address",
                                             subTitle: userAdress(data),
-                                            /*data["address"] == ""
-                                                ? "13th street ,hennur cross ,banglore 142"
-                                                : data["address"],*/
                                             icon: Icons.location_pin,
                                           ),
                                         ],
@@ -314,13 +311,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                       child: Column(
                                         children: [
-                                          // RepeatedListTile(
-                                          //   title: "Edit Profile",
-                                          //   subTitle: "",
-                                          //   icon: Icons.edit,
-                                          //   onPressed: () {},
-                                          // ),
-                                          // const GreyDivider(),
                                           RepeatedListTile(
                                             title: "Change Password",
                                             subTitle: " ",

@@ -10,9 +10,6 @@ List<ItemData> items = [
   ItemData(label: "Cake"),
   ItemData(label: "Bake"),
   ItemData(label: "Gifts"),
-  // ItemData(label: "Hampers"),
-  // ItemData(label: "Cards"),
-  // ItemData(label: "SaveTheDate"),
   ItemData(label: "Flowers"),
 ];
 
@@ -109,9 +106,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
           CakeCategory(),
           BakeCategory(),
           GiftCategory(),
-          // HampersCategory(),
-          // CardsCategory(),
-          // SaveTheDate(),
           FlowersCategory(),
         ],
       ),

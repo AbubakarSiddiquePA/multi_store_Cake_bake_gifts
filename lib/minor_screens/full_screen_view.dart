@@ -20,7 +20,7 @@ class _FullScreenViewState extends State<FullScreenView> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        leading: AppBarBackButton(),
+        leading: const AppBarBackButton(),
       ),
       body: SafeArea(
         child: Column(
@@ -31,7 +31,7 @@ class _FullScreenViewState extends State<FullScreenView> {
                 ("${index + 1}") +
                     ("/") +
                     (widget.imagesList.length.toString()),
-                style: TextStyle(fontSize: 24, letterSpacing: 8),
+                style: const TextStyle(fontSize: 24, letterSpacing: 8),
               ),
             ),
             SizedBox(
@@ -65,7 +65,7 @@ class _FullScreenViewState extends State<FullScreenView> {
               _controller.jumpToPage(index);
             },
             child: Container(
-              margin: EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               width: 120,
               decoration: BoxDecoration(
                   border: Border.all(width: 4, color: Colors.grey),

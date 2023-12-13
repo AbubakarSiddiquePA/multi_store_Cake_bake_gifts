@@ -196,7 +196,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                                       Alignment.centerLeft,
                                                   child: Padding(
                                                     padding: const EdgeInsets
-                                                            .symmetric(
+                                                        .symmetric(
                                                         horizontal: 17),
                                                     child: Text(
                                                       order.name,
@@ -214,7 +214,7 @@ class _PlaceOrderScreenState extends State<PlaceOrderScreen> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       vertical: 4,
                                                       horizontal: 12),
                                                   child: Row(

@@ -23,9 +23,6 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
     StoresScreen(),
     DashboardScreen(),
     UploadProductScreen(),
-
-    // CartScreen(),
-    // ProfileScreen(),
   ];
 
   @override

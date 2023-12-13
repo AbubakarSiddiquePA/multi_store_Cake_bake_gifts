@@ -71,6 +71,7 @@ class Balance extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class BalanceModel extends StatelessWidget {
   String? rs;
   final String label;

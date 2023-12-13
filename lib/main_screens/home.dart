@@ -37,18 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 RepeatedTab(
                   label: 'Gift',
                 ),
-                // RepeatedTab(
-                //   label: 'Hampers',
-                // ),
-                // RepeatedTab(
-                //   label: 'Save the date',
-                // ),
                 RepeatedTab(
                   label: 'Flowers',
                 ),
-                // RepeatedTab(
-                //   label: 'Cards',
-                // ),
               ]),
         ),
         body: const TabBarView(
@@ -56,10 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             CakeGalleryScreen(),
             BakeGalleryScreen(),
             GiftGalleryScreen(),
-            // HampersGallery(),
-            // SaveTheDateGallery(),
             FlowersGallery(),
-            // CardsGallery(),
           ],
         ),
       ),
