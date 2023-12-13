@@ -1,8 +1,8 @@
 import 'package:bake_store/dashboard_components/balance.dart';
-import 'package:bake_store/dashboard_components/edit_buisness.dart';
 import 'package:bake_store/dashboard_components/manage_products.dart';
 import 'package:bake_store/dashboard_components/splier_ordrs.dart';
 import 'package:bake_store/dashboard_components/suplier_statcs.dart';
+import 'package:bake_store/main_screens/delete_privacy_policy.dart';
 import 'package:bake_store/minor_screens/visit_store.dart';
 import 'package:bake_store/providers/auth_repo.dart';
 import 'package:bake_store/widgets/appbar_widgets.dart';
@@ -31,7 +31,7 @@ List<IconData> icons = [
 List<Widget> pages = [
   VisitStore(suppId: FirebaseAuth.instance.currentUser!.uid),
   const SupllierOrders(),
-  const AccountInfo(),
+  const DeletePrivacyPolicyScreen(),
   const ManageProduct(),
   const Balance(),
   const Statics(),
