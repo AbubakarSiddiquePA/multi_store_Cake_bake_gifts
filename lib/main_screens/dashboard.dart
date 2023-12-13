@@ -14,7 +14,7 @@ import '../widgets/alert_dialg.dart';
 List<String> label = [
   "my store",
   "orders",
-  "Privacy policy & account deletion",
+  "Privacy policy",
   "manage products",
   "balance",
   "statics"
@@ -77,7 +77,7 @@ class DashboardScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(10.0),
         child: GridView.count(
             mainAxisSpacing: 50,
             crossAxisSpacing: 50,
@@ -105,14 +105,17 @@ class DashboardScreen extends StatelessWidget {
                           size: 45,
                           color: Colors.black,
                         ),
-                        Text(
-                          label[index].toUpperCase(),
-                          style: const TextStyle(
-                              fontSize: 24,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
-                              fontFamily: "Acme"),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            label[index].toUpperCase(),
+                            style: const TextStyle(
+                                fontSize: 24,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2,
+                                fontFamily: "Acme"),
+                          ),
                         )
                       ],
                     ),
