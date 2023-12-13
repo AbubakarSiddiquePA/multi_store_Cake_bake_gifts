@@ -374,7 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          DeletePrivacyPolicyScreen()));
+                                                          const DeletePrivacyPolicyScreen()));
                                             },
                                           ),
                                         ],
